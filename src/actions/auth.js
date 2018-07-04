@@ -41,7 +41,7 @@ export function requestUserInfoFromApi(vkInfo) {
 
 function getPostForVKUsersAdd(vkInfo) {
     return {
-        regId: '15D3BA89DB29613640E4AB3223231B7E',
+        regId: defaultAuth.token,
         accessToken: defaultAuth.tokenForUsersAdding,
         vkId: vkInfo.id,
         firstName: vkInfo.first_name,

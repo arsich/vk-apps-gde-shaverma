@@ -30,7 +30,6 @@ class MapComponent extends Component {
     }
     handleBalloonClicked = (place) => {
         document.getElementById("balloon_id").onclick = (event) => {
-            //this.context.router.push(`/place/${place.id}`)
             this.props.handleShowPlace(place)
         }
     }
