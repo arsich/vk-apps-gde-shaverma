@@ -3,8 +3,8 @@ import defaultAuth from './defaultAuth'
 import {sendAuthInfo, sendVKInfo, requestUserInfoFromApi} from '../actions/auth'
 import {initVK, setTitle, getUserInfo} from '../actions/vk'
 
-const AUTH_USER_KEY = 'key_auth_user'
-const VK_INFO_KEY = 'key_vk_user'
+const AUTH_USER_KEY = 'key_auth_user_info'
+const VK_INFO_KEY = 'key_vk_info_user'
 
 class AuthHelper {
     init(store) {

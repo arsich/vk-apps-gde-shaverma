@@ -56,6 +56,19 @@ class PlaceComponent extends Component {
                         {place.site ? <UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem> : null }
                     </UI.List>
                 </UI.Group>
+                {place.rateByDevice ?
+                    <UI.Group title="Мой отзыв">
+                        <UI.Div>
+                            <UI.Entity
+                                photo={this.props.userAvatar}
+                                size={64}
+                                title={`Оценка ${place.rateByDevice} из 5`}
+                                description={place.rateByDeviceText}>
+                            </UI.Entity>
+                        </UI.Div>
+                    </UI.Group>
+                    : null
+                }
                 <UI.Group title="Рейтинг">
                     <UI.Div>
                         <UI.Entity
@@ -101,7 +114,8 @@ class PlaceComponent extends Component {
 
 
 PlaceComponent.propTypes = {
-    place: PropTypes.object
+    place: PropTypes.object,
+    userAvatar: PropTypes.string
 }
 
 export default PlaceComponent

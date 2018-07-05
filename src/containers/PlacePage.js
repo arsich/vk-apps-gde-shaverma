@@ -35,10 +35,10 @@ class PlacePage extends Component {
     }
 
     render() {
-        const {place} = this.props;
+        const {place, userAvatar} = this.props;
         return (
             <UI.View id="mainView" activePanel={this.state.activePanel}>
-                <PlaceComponent place={place} id="mainPanel"/>
+                <PlaceComponent place={place} id="mainPanel" userAvatar={userAvatar}/>
                 <UI.Panel id="loadingPanel">
                     <UI.ScreenSpinner />
                 </UI.Panel>
@@ -51,6 +51,7 @@ PlacePage.propTypes = {
     place: PropTypes.object,
     placeLoading: PropTypes.bool,
     needBack: PropTypes.bool,
+    userAvatar: PropTypes.string,
     placeId: PropTypes.string.isRequired,
     getPlaceInfo: PropTypes.func.isRequired,
     updateNavigation: PropTypes.func.isRequired,
@@ -63,7 +64,8 @@ const mapStateToProps = (state, ownProps) => {
         placeLoading: state.places && state.places.placeInfoLoading,
         placeId: ownProps.match.params.placeId,
         needBack: state.vk && state.vk.needBack,
-        goBack: ownProps.history.goBack
+        goBack: ownProps.history.goBack,
+        userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200
     }
 }
 

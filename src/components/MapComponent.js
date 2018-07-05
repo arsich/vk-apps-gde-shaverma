@@ -52,7 +52,7 @@ class MapComponent extends Component {
                               }}
                               properties={{
                                   balloonContentHeader: titleLayout,
-                                  balloonContent: place.description.substring(0, 25),
+                                  balloonContent: place.description && place.description.substring(0, 25),
                                   balloonPanelMaxMapArea: 0,
                                   balloonContentFooter: getRatingForPlace(place),
                                   iconContent: iconLayout,

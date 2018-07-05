@@ -15,6 +15,7 @@ class LocationHelper {
     setUserLocationFromVK(location) {
         this.hasLocation = true
         storage.set(LAST_USER_LOCATION_KEY, location)
+        storage.set(LAST_REQUESTED_LOCATION_KEY, location)
         this.send(sendNewLocation(location))
     }
 
