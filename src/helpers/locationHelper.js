@@ -21,12 +21,41 @@ class LocationHelper {
 
     setNoLocationFromVK() {
         this.hasLocation = true
-        const location = storage.get(LAST_REQUESTED_LOCATION_KEY) || storage.get(LAST_USER_LOCATION_KEY) || DEFAULT_LOCATION_DATA
+        const location = storage.get(LAST_REQUESTED_LOCATION_KEY) || storage.get(LAST_USER_LOCATION_KEY)
+        if (location) {
+            this.send(sendNewLocation(location))
+        } else {
+            if (this.vkInfoLoaded) {
+                this.sendDefaultLocation()
+            } else {
+                this.needDefaultLocation = true
+            }
+        }
+    }
+
+    sendDefaultLocation() {
+        const location = this.vkInfo && this.vkInfo.city ? this.getLocationFromCity(this.vkInfo.city.title) : DEFAULT_LOCATION_DATA
         this.send(sendNewLocation(location))
+    }
+
+    getLocationFromCity(city) {
+        return require('./defaultLocations')[city] || DEFAULT_LOCATION_DATA
     }
 
     setNewLastRequestLocation(location) {
         storage.set(LAST_REQUESTED_LOCATION_KEY, location)
+    }
+
+    setVkInfo(vkInfo) {
+        this.vkInfo = vkInfo
+        this.setVkInfoFinish()
+    }
+
+    setVkInfoFinish() {
+        this.vkInfoLoaded = true
+        if (this.needDefaultLocation) {
+            this.sendDefaultLocation()
+        }
     }
 
     send(message) {

@@ -47,8 +47,8 @@ function getPostForVKUsersAdd(vkInfo) {
         firstName: vkInfo.first_name,
         lastName: vkInfo.last_name,
         sex: vkInfo.sex,
-        city: vkInfo.city.title,
-        country: vkInfo.country.title,
+        city: vkInfo.city && vkInfo.city.title,
+        country: vkInfo.country && vkInfo.country.title,
         photoSmall: vkInfo.photo_200,
         photoMax: vkInfo.photo_200
     }
