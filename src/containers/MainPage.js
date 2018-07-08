@@ -6,10 +6,28 @@ import { withRouter } from 'react-router-dom'
 import {getPlacesNearby} from '../actions/places'
 import {updateNavigation} from '../actions/vk'
 import {sendLastRequestedLocation} from '../actions/location'
+import * as UI from '@vkontakte/vkui';
 
 import MapComponent from '../components/MapComponent'
 
+import './MainPage.css'
+
+import ProfilePage from './ProfilePage'
+
+const MAP = 'map'
+const PROFILE = 'profile'
+
+let lastActiveTap = MAP
+
 class MainPage extends Component {
+    constructor (props) {
+        super(props);
+
+        this.state = {
+            activeTab: lastActiveTap
+        };
+    }
+
     componentDidMount() {
         const {getPlacesNearby, lastUserLocation} = this.props
         if (!this.props.places || !this.props.places.length) {
@@ -29,14 +47,47 @@ class MainPage extends Component {
 
     render() {
         const {places, lastUserLocation} = this.props;
-        return <div className="fullHeight">
-            { lastUserLocation ?
-                    <MapComponent places={places}
-                                  location={lastUserLocation}
-                                  handleShowPlace={this.handleShowPlace}
-                                  handleLocationChanged={this.handleLocationChanged} />
-                        : null }
-                </div>
+        const isMap = this.state.activeTab === MAP
+        const isProfile = this.state.activeTab === PROFILE
+        return (
+            <UI.Root activeView="view1">
+            <UI.View activePanel="panel_content" header={false} id="view1">
+                <UI.Panel id="panel_content">
+                    <div className="main_content">
+                        {isMap ?
+                            <MapComponent places={places}
+                                          location={lastUserLocation}
+                                          handleShowPlace={this.handleShowPlace}
+                                          handleLocationChanged={this.handleLocationChanged} />
+                            : null}
+                        {isProfile ?
+                            <ProfilePage handleShowPlace={this.handleShowPlace}/>
+                            : null}
+                    </div>
+                    <UI.FixedTabs>
+                        <UI.TabsItem
+                            onClick={() => {
+                                lastActiveTap = MAP
+                                this.setState({ activeTab: MAP })}
+                            }
+                            selected={isMap}
+                        >
+                            Карта
+                        </UI.TabsItem>
+                        <UI.TabsItem
+                            onClick={() => {
+                                lastActiveTap = PROFILE
+                                this.setState({ activeTab: PROFILE })}
+                            }
+                            selected={isProfile}
+                        >
+                            Профиль
+                        </UI.TabsItem>
+                    </UI.FixedTabs>
+                </UI.Panel>
+            </UI.View>
+            </UI.Root>
+        )
     }
 }
 

@@ -41,7 +41,6 @@ export function requestUserInfoFromApi(vkInfo) {
 
 function getPostForVKUsersAdd(vkInfo) {
     return {
-        regId: defaultAuth.token,
         accessToken: defaultAuth.tokenForUsersAdding,
         vkId: vkInfo.id,
         firstName: vkInfo.first_name,
@@ -52,4 +51,18 @@ function getPostForVKUsersAdd(vkInfo) {
         photoSmall: vkInfo.photo_200,
         photoMax: vkInfo.photo_200
     }
+}
+
+export const GET_MY_PROFILE = 'auth/GET_MY_PROFILE';
+export const GET_MY_PROFILE_SUCCESS = 'auth/GET_MY_PROFILE_SUCCESS';
+export const GET_MY_PROFILE_FAILED = 'auth/GET_MY_PROFILE_FAIL';
+
+export function requestProfileInfo(userId) {
+    return {[CALL_API]: {
+        types: [GET_MY_PROFILE, GET_MY_PROFILE_SUCCESS, GET_MY_PROFILE_FAILED],
+        endpoint: 'VkUsers/getInfo',
+        post: {
+            userId
+        }
+    }}
 }

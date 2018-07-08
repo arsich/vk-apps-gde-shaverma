@@ -28,11 +28,10 @@ class PlaceComponent extends Component {
         const renderComment = (comment) => {
             return (
                 <UI.Div  key={"comment_" + comment.id}>
-                    <UI.Entity
-                                  photo={getImageUrl(comment.user.photoSmall)}
-                                  size={64}
-                                  title={comment.value + " из 5"}
-                                  description={getDateFromTimestamp(comment.date) + " " + comment.user.firstName + " " + comment.user.lastName}>
+                    <UI.Entity photo={getImageUrl(comment.user.photoSmall)}
+                               size={64}
+                               title={comment.value + " из 5"}
+                               description={comment.user.firstName + " " + comment.user.lastName + " " + getDateFromTimestamp(comment.date)}>
                         <div>{comment.text}</div>
                     </UI.Entity>
                 </UI.Div>)

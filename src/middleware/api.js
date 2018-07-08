@@ -13,7 +13,7 @@ export default store => next => action => {
     const post = action[CALL_API].post ? {method: 'POST', headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-    }, body: JSON.stringify(action[CALL_API].post)} : {}
+    }, body: JSON.stringify({...action[CALL_API].post, regId: getToken(store)})} : {}
     fetch(createUrl(action[CALL_API].endpoint, query), post)
         .then(response => {
             return response.json()

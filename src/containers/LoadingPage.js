@@ -12,7 +12,7 @@ class LoadingPage extends Component {
             return <Redirect to={from}/>
         }
         return (
-            <UI.View id="mainView" activePanel="loadingPanel">
+            <UI.View id="mainView" activePanel="loadingPanel" header={false}>
                 <UI.Panel id="loadingPanel">
                     <UI.ScreenSpinner />
                 </UI.Panel>

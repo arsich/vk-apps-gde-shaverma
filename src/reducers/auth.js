@@ -1,4 +1,4 @@
-import {NEW_AUTH_INFO, GET_VK_USER_INFO_SUCCESS} from '../actions/auth'
+import {NEW_AUTH_INFO, GET_VK_USER_INFO_SUCCESS, GET_MY_PROFILE_SUCCESS} from '../actions/auth'
 
 export default function authReducer(state = {hasAuth: false}, action = {}) {
     switch (action.type) {
@@ -13,6 +13,11 @@ export default function authReducer(state = {hasAuth: false}, action = {}) {
                 ...state,
                 vkInfo: action.data
             };
+        case GET_MY_PROFILE_SUCCESS:
+            return {
+                ...state,
+                profileInfo: action.result.result
+            }
         default:
             return state;
     }
