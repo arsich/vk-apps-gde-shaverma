@@ -53,3 +53,11 @@ export function getImageUrl(url) {
         return `https://gdeshaverma.ru${url || '/api/v1/containers/images/download/default.png'}`
     }
 }
+
+export function getUrl(url) {
+    if (url.indexOf("http") >= 0) {
+        return url
+    } else {
+        return `https://${url}`
+    }
+}

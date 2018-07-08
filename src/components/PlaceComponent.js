@@ -11,7 +11,7 @@ import Icon24Globe from '@vkontakte/icons/dist/24/globe';
 import './PlaceComponent.css'
 
 import {getImageForPlace, getIconForPlace,
-    getRatingForPlace, getDateFromTimestamp, getImageUrl} from '../helpers/placeUtils'
+    getRatingForPlace, getDateFromTimestamp, getImageUrl, getUrl} from '../helpers/placeUtils'
 
 import icBeer from '../assets/ic_beer_circle.png'
 import icWC from '../assets/ic_wc_circle.png'
@@ -53,7 +53,7 @@ class PlaceComponent extends Component {
                         {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
                         {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
                         {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}>{place.phoneNumber}</UI.ListItem> : null }
-                        {place.site ? <UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem> : null }
+                        {place.site ? <a href={getUrl(place.site)} target="_blank"><UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem></a> : null }
                     </UI.List>
                 </UI.Group>
                 {place.rateByDevice ?
