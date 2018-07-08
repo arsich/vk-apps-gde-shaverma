@@ -12,7 +12,9 @@ import MapComponent from '../components/MapComponent'
 class MainPage extends Component {
     componentDidMount() {
         const {getPlacesNearby, lastUserLocation} = this.props
-        getPlacesNearby(lastUserLocation.lat, lastUserLocation.lng)
+        if (!this.props.places || !this.props.places.length) {
+            getPlacesNearby(lastUserLocation.lat, lastUserLocation.lng)
+        }
     }
 
     handleShowPlace = (place) => {
@@ -45,7 +47,7 @@ MainPage.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     const places = state.places && state.places.listNearby ? state.places.listNearby : []
-    const location = state.location ? state.location.lastUserLocation : null
+    const location = state.location ? state.location.lastRequestedLocation || state.location.lastUserLocation : null
     return {places, lastUserLocation: location, pushLocation: ownProps.history.push}
 }
 
