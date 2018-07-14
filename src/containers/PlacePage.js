@@ -15,7 +15,10 @@ class PlacePage extends Component {
         super(props)
 
         this.state = {
-            activePanel: 'loadingPanel'
+            activePanel: 'loadingPanel',
+            ratingDialog: null,
+            ratingValue: 5,
+            ratingComment: ''
         }
     }
 
@@ -27,6 +30,18 @@ class PlacePage extends Component {
             this.props.updateNavigation(false, false)
             this.props.goBack()
         }
+        if (nextProps.place && nextProps.place.rateByDevice) {
+            this.setState({
+                ratingValue: nextProps.place.rateByDevice,
+                ratingComment: nextProps.place.rateByDeviceText
+            })
+        } else {
+            this.setState({
+                ratingDialog: null,
+                ratingValue: 5,
+                ratingComment: ''
+            })
+        }
     }
 
     componentDidMount() {
@@ -34,11 +49,53 @@ class PlacePage extends Component {
         getPlaceInfo(placeId)
     }
 
+    openRatingDialog = () => {
+        this.setState({
+            ratingDialog:
+                <UI.Alert
+                    actions={[{
+                      title: 'Отмена',
+                      autoclose: true,
+                      action: ()=> {
+
+                      },
+                      style: 'cancel'
+                    }, {
+                      title: 'Сохранить',
+                      autoclose: true,
+                      action: ()=> {
+
+                      },
+                      style: 'destructive'
+                    }]}
+                    onClose={ () => this.setState({ ratingDialog: null }) }
+                >
+                    <UI.FormLayout>
+                        <UI.Slider
+                            min={0.5}
+                            max={5}
+                            value={Number(this.state.ratingValue)}
+                            step={0.5}
+                            onChange={ratingValue => this.setState({ratingValue})}
+                            top={<p>Моя оценка: <b>{this.state.ratingValue}</b></p>}
+                        />
+                        <UI.Textarea top="Комментарий"
+                                  value={this.state.ratingComment}
+                                  onChange={e => { this.setState({ratingComment: e.target.value})}}
+                                  placeholder="Что понравилось, что можно улучшить" />
+                    </UI.FormLayout>
+                </UI.Alert>
+        })
+    }
+
     render() {
         const {place, userAvatar} = this.props;
         return (
-            <UI.View id="mainView" activePanel={this.state.activePanel}>
-                <PlaceComponent place={place} id="mainPanel" userAvatar={userAvatar}/>
+            <UI.View id="mainView" activePanel={this.state.activePanel} popout={this.state.ratingDialog}>
+                <PlaceComponent place={place}
+                                id="mainPanel"
+                                openRatingDialog={this.openRatingDialog}
+                                userAvatar={userAvatar}/>
                 <UI.Panel id="loadingPanel">
                     <UI.ScreenSpinner />
                 </UI.Panel>

@@ -55,14 +55,15 @@ class PlaceComponent extends Component {
                         {place.site ? <a href={getUrl(place.site)} target="_blank"><UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem></a> : null }
                     </UI.List>
                 </UI.Group>
-                {place.rateByDevice ?
+                {!place.rateByDeviceBanned ?
                     <UI.Group title="Мой отзыв">
                         <UI.Div>
                             <UI.Entity
                                 photo={this.props.userAvatar}
                                 size={64}
-                                title={`Оценка ${place.rateByDevice} из 5`}
+                                title={place.rateByDevice ? `Оценка ${place.rateByDevice} из 5` : 'Вы еще не поставили оценку'}
                                 description={place.rateByDeviceText}>
+                                <UI.Button level="buy" onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
                             </UI.Entity>
                         </UI.Div>
                     </UI.Group>
@@ -114,7 +115,8 @@ class PlaceComponent extends Component {
 
 PlaceComponent.propTypes = {
     place: PropTypes.object,
-    userAvatar: PropTypes.string
+    userAvatar: PropTypes.string,
+    openRatingDialog: PropTypes.func
 }
 
 export default PlaceComponent
