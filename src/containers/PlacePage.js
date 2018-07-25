@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as UI from '@vkontakte/vkui';
 
-import {getPlaceInfo} from '../actions/places'
+import {getPlaceInfo, addRating, deleteRating} from '../actions/places'
 import {updateNavigation} from '../actions/vk'
 
 import PlaceComponent from '../components/PlaceComponent'
@@ -42,11 +42,21 @@ class PlacePage extends Component {
                 ratingComment: ''
             })
         }
+
+        if (nextProps.ratingUpdated && !this.props.ratingUpdated) {
+            const {getPlaceInfo, placeId} = this.props
+            getPlaceInfo(placeId)
+        }
     }
 
     componentDidMount() {
         const {getPlaceInfo, placeId} = this.props
         getPlaceInfo(placeId)
+    }
+
+    updateRating = () => {
+        const {placeId, addRating} = this.props
+        addRating(placeId, this.state.ratingValue, this.state.ratingComment)
     }
 
     openRatingDialog = () => {
@@ -64,7 +74,7 @@ class PlacePage extends Component {
                       title: 'Сохранить',
                       autoclose: true,
                       action: ()=> {
-
+                          this.updateRating()
                       },
                       style: 'destructive'
                     }]}
@@ -88,6 +98,11 @@ class PlacePage extends Component {
         })
     }
 
+    deleteRating = () => {
+        const {placeId, deleteRating} = this.props
+        deleteRating(placeId)
+    }
+
     render() {
         const {place, userAvatar} = this.props;
         return (
@@ -95,6 +110,7 @@ class PlacePage extends Component {
                 <PlaceComponent place={place}
                                 id="mainPanel"
                                 openRatingDialog={this.openRatingDialog}
+                                deleteRating={this.deleteRating}
                                 userAvatar={userAvatar}/>
                 <UI.Panel id="loadingPanel">
                     <UI.ScreenSpinner />
@@ -108,10 +124,13 @@ PlacePage.propTypes = {
     place: PropTypes.object,
     placeLoading: PropTypes.bool,
     needBack: PropTypes.bool,
+    ratingUpdated: PropTypes.bool,
     userAvatar: PropTypes.string,
     placeId: PropTypes.string.isRequired,
     getPlaceInfo: PropTypes.func.isRequired,
     updateNavigation: PropTypes.func.isRequired,
+    addRating: PropTypes.func.isRequired,
+    deleteRating: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired
 }
 
@@ -122,10 +141,11 @@ const mapStateToProps = (state, ownProps) => {
         placeId: ownProps.match.params.placeId,
         needBack: state.vk && state.vk.needBack,
         goBack: ownProps.history.goBack,
-        userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200
+        userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200,
+        ratingUpdated: state.places && state.places.ratingUpdated
     }
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPlaceInfo, updateNavigation
+    getPlaceInfo, updateNavigation, addRating, deleteRating
 })(PlacePage))

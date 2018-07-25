@@ -4,3 +4,7 @@
     overflow: hidden;
     object-fit: cover;
 }
+
+.ratingMarginLeft {
+    margin-left: 12px;
+}

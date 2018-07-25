@@ -30,3 +30,33 @@ export function getPlaceInfo(placeId) {
         }
     }}
 }
+
+export const ADD_RATING = 'places/ADD_RATING'
+export const ADD_RATING_SUCCESS = 'places/ADD_RATING_SUCCESS'
+export const ADD_RATING_FAIL = 'places/ADD_RATING_FAIL'
+
+export function addRating(placeId, value, text) {
+    return {[CALL_API]: {
+        types: [ADD_RATING, ADD_RATING_SUCCESS, ADD_RATING_FAIL],
+        endpoint: 'Rates/add',
+        post: {
+            placeId,
+            value,
+            text
+        }
+    }}
+}
+
+export const DELETE_RATING = 'places/DELETE_RATING'
+export const DELETE_RATING_SUCCESS = 'places/DELETE_RATING_SUCCESS'
+export const DELETE_RATING_FAIL = 'places/DELETE_RATING_FAIL'
+
+export function deleteRating(placeId) {
+    return {[CALL_API]: {
+        types: [DELETE_RATING, DELETE_RATING_SUCCESS, DELETE_RATING_FAIL],
+        endpoint: 'Rates/delete',
+        post: {
+            placeId
+        }
+    }}
+}

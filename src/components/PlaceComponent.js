@@ -64,6 +64,7 @@ class PlaceComponent extends Component {
                                 title={place.rateByDevice ? `Оценка ${place.rateByDevice} из 5` : 'Вы еще не поставили оценку'}
                                 description={place.rateByDeviceText}>
                                 <UI.Button level="buy" onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
+                                {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
                             </UI.Entity>
                         </UI.Div>
                     </UI.Group>
@@ -116,7 +117,8 @@ class PlaceComponent extends Component {
 PlaceComponent.propTypes = {
     place: PropTypes.object,
     userAvatar: PropTypes.string,
-    openRatingDialog: PropTypes.func
+    openRatingDialog: PropTypes.func,
+    deleteRating: PropTypes.func
 }
 
 export default PlaceComponent
