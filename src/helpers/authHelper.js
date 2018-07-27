@@ -1,15 +1,17 @@
 import storage from './storage'
 import defaultAuth from './defaultAuth'
-import {sendAuthInfo, sendVKInfo, requestUserInfoFromApi} from '../actions/auth'
+import {sendAuthInfo, sendVKInfo, requestUserInfoFromApi, hideIntro} from '../actions/auth'
 import {initVK, setTitle, getUserInfo} from '../actions/vk'
 
 const AUTH_USER_KEY = 'key_auth_user_info'
 const VK_INFO_KEY = 'key_vk_info_user'
+const INTRO_SHOWN = 'key_intro_shown'
 
 class AuthHelper {
     init(store) {
         this.store = store
         this.hasAuth = false
+        this.needToShowIntro = true
         this.initVkUI()
 
         const authInfo = storage.get(AUTH_USER_KEY)
@@ -19,6 +21,12 @@ class AuthHelper {
             this.send(sendVKInfo(storage.get(VK_INFO_KEY)))
         } else {
             this.requestUserInfoFromVkUi()
+        }
+
+        const introShown = storage.get(INTRO_SHOWN)
+        if (introShown) {
+            this.needToShowIntro = false
+            this.send(hideIntro())
         }
     }
 
@@ -68,7 +76,16 @@ class AuthHelper {
     }
 
     hasAuthForUser() {
-        return this.hasAuth;
+        return this.hasAuth
+    }
+
+    needToShowIntroToUser() {
+        return this.needToShowIntro
+    }
+
+    saveIntroShown() {
+        this.needToShowIntro = false
+        storage.set(INTRO_SHOWN, true)
     }
 }
 

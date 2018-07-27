@@ -66,3 +66,11 @@ export function requestProfileInfo(userId) {
         }
     }}
 }
+
+export const HIDE_INTRO = 'auth/HIDE_INTRO';
+
+export function hideIntro() {
+    return {
+        type: HIDE_INTRO
+    }
+}

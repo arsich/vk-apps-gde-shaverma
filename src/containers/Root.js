@@ -24,7 +24,9 @@ const Root = ({ store }) => (
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
         {...rest}
-        render={props => (authHelper.hasAuthForUser() && locationHelper.hasLocationForUser() ? (
+        render={props => (authHelper.hasAuthForUser() 
+            && !authHelper.needToShowIntroToUser()
+            && locationHelper.hasLocationForUser() ? (
         <Component {...props} />
       ) : (
         <Redirect

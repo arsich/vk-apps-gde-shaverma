@@ -1,6 +1,7 @@
 import authHelper from '../helpers/authHelper'
 import {GET_VK_USER_INFO_SUCCESS, GET_VK_USER_INFO_FAILED,
-    GET_USER_INFO_FROM_API_SUCCESS, GET_USER_INFO_FROM_API_FAILED} from '../actions/auth'
+    GET_USER_INFO_FROM_API_SUCCESS, GET_USER_INFO_FROM_API_FAILED,
+    HIDE_INTRO} from '../actions/auth'
 
 export default store => next => action => {
     switch (action.type) {
@@ -15,6 +16,9 @@ export default store => next => action => {
             break;
         case GET_USER_INFO_FROM_API_FAILED:
             authHelper.setDefaultToken()
+            break;
+        case HIDE_INTRO:
+            authHelper.saveIntroShown()
             break;
         default:
             break;
