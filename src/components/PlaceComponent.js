@@ -21,6 +21,25 @@ import icSupplier from '../assets/ic_supplier_circle.png'
 import icCard from '../assets/ic_card_circle.png'
 import icHyg from '../assets/ic_hyg_circle.png'
 
+const specialsStyle = {
+    flexShrink: 0,
+    width: 90,
+    height: 100,
+    display: 'flex',
+    flexDirection:
+    'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingLeft: 8,
+    marginBottom: 8,
+    fontSize: 14
+  }
+
+const specialsAvatarStyle = {
+    marginBottom: 8,
+    backgroundColor: 'white'
+}
+
 class PlaceComponent extends Component {
     render() {
         const place = this.props.place || {}
@@ -47,13 +66,15 @@ class PlaceComponent extends Component {
                 </UI.PanelHeader>
                 <img src={getImageForPlace(place)} className="imageBig" alt={place.name} />
                 <UI.Group title={place.description}>
-                    <UI.List>
-                        <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
-                        {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
-                        {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
-                        {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}>{place.phoneNumber}</UI.ListItem> : null }
-                        {place.site ? <a href={getUrl(place.site)} target="_blank"><UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem></a> : null }
-                    </UI.List>
+                    <UI.Div>
+                        <UI.List>
+                            <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
+                            {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
+                            {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
+                            {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}>{place.phoneNumber}</UI.ListItem> : null }
+                            {place.site ? <a href={getUrl(place.site)} target="_blank"><UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem></a> : null }
+                        </UI.List>
+                    </UI.Div>
                 </UI.Group>
                 {!place.rateByDeviceBanned ?
                     <UI.Group title="Мой отзыв">
@@ -61,9 +82,12 @@ class PlaceComponent extends Component {
                             <UI.Entity
                                 photo={this.props.userAvatar}
                                 size={64}
+                                style={{paddingBottom: 8}}
                                 title={place.rateByDevice ? `Оценка ${place.rateByDevice} из 5` : 'Вы еще не поставили оценку'}
                                 description={place.rateByDeviceText}>
-                                <UI.Button level="buy" onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
+                                <UI.Button level="buy" 
+                                    style={{marginTop: 4}}
+                                    onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
                                 {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
                             </UI.Entity>
                         </UI.Div>
@@ -74,6 +98,7 @@ class PlaceComponent extends Component {
                     <UI.Div>
                         <UI.Entity
                             photo={getIconForPlace(place)}
+                            avatarProps={{style: {backgroundColor: 'white'}}}
                             size={64}
                             title={getRatingForPlace(place)}
                             description={"Человек оценило: " + place.ratesCount}>
@@ -82,15 +107,52 @@ class PlaceComponent extends Component {
                 </UI.Group>
                 {hasSpecials ?
                 <UI.Group title="Особенности">
-                    <UI.List>
-                        {place.supplierId > 0 ? <UI.ListItem before={<UI.Avatar src={icSupplier} />}>Проверенный поставщик</UI.ListItem> : null }
-                        {place.hasVisa ? <UI.ListItem before={<UI.Avatar src={icCard} />}>Оплата по карте</UI.ListItem> : null }
-                        {place.hasFalafel ? <UI.ListItem before={<UI.Avatar src={icVeg} />}>Вегетарианские блюда</UI.ListItem> : null }
-                        {place.hasBeer ? <UI.ListItem before={<UI.Avatar src={icBeer} />}>Пиво</UI.ListItem> : null }
-                        {place.hasWC ? <UI.ListItem before={<UI.Avatar src={icWC} />}>Туалет</UI.ListItem> : null }
-                        {place.hasOnCoal ? <UI.ListItem before={<UI.Avatar src={icCoal} />}>Готовят на углях</UI.ListItem> : null }
-                        {place.hasHygiene ? <UI.ListItem before={<UI.Avatar src={icHyg} />}>Гигиена на кухне</UI.ListItem> : null }
-                    </UI.List>
+                    <UI.HorizontalScroll>
+                        <UI.Div style={{ display: 'flex', justifyContent: 'center' }}>
+                        {place.supplierId > 0 ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icSupplier}/>
+                                Проверенный поставщик
+                            </div>
+                        : null }
+                        {place.hasVisa ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icCard}/>
+                                 Оплата по&nbsp;карте
+                            </div>
+                        : null }
+                        {place.hasFalafel ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icVeg}/>
+                                 Веганские блюда
+                            </div>
+                        : null }
+                        {place.hasBeer ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icBeer}/>
+                                 Пиво
+                            </div>
+                        : null }
+                        {place.hasWC ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icWC}/>
+                                 Туалет
+                            </div>
+                        : null }
+                        {place.hasOnCoal ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icCoal}/>
+                                Готовят на&nbsp;углях
+                            </div>
+                        : null }
+                        {place.hasHygiene ? 
+                            <div style={specialsStyle}>
+                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icHyg}/>
+                                Гигиена на&nbsp;кухне
+                            </div>
+                        : null }
+                        </UI.Div>
+                    </UI.HorizontalScroll>
                 </UI.Group>
                 : null }
                 {hasComments ?

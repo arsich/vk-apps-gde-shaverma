@@ -17,16 +17,11 @@ class ProfileComponent extends Component {
 
         const renderComment = (comment) => {
             return (
-                <UI.Div key={"comment_profile_" + comment.id}
-                        onClick={this.handleShowPlace.bind(this, comment.place)}>
-                    <UI.Entity
-                        photo={getImageUrl(comment.place.picture)}
-                        size={64}
-                        title={comment.value + " из 5"}
-                        description={comment.place.name}>
-                        <div>{comment.text}</div>
-                    </UI.Entity>
-                </UI.Div>)
+                <UI.ListItem before={<UI.Avatar src={getImageUrl(comment.place.picture)} />}
+                    key={"comment_profile_" + comment.id}
+                    description={comment.text}
+                    onClick={this.handleShowPlace.bind(this, comment.place)}>{comment.place.name + ". " +comment.value + " из 5"}</UI.ListItem>
+            )
         }
 
         const comments = profile && profile.ratingsInfo
@@ -44,7 +39,14 @@ class ProfileComponent extends Component {
                     </UI.Div>
                 </UI.Group>
                 <UI.Group title="Мои оценки">
-                    {comments ? comments.map(renderComment) : null}
+                    <UI.Div>
+                        {comments && comments.length ?
+                            <UI.List>
+                                {comments.map(renderComment)}
+                            </UI.List>
+                            : <div>Пока нет оценок</div>
+                        }
+                    </UI.Div>
                 </UI.Group>
             </UI.Panel>
         )
