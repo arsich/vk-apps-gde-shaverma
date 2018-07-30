@@ -60,7 +60,7 @@ export const UPDATE_INSETS = 'vk_update_insets'
 
 export function updateInsets(insets) {
     return {
-        type: SET_TITLE_EVENT,
-        data: UPDATE_INSETS
+        type: UPDATE_INSETS,
+        data: insets
     }
 }
