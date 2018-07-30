@@ -55,3 +55,12 @@ export function updateNavigation(can_back, can_forward) {
 
 export const VK_NEED_GO_BACK_EVENT = "vk_need_go_back_event"
 export const VK_WENT_BACK_EVENT = "vk_went_back_event"
+
+export const UPDATE_INSETS = 'vk_update_insets'
+
+export function updateInsets(insets) {
+    return {
+        type: SET_TITLE_EVENT,
+        data: UPDATE_INSETS
+    }
+}

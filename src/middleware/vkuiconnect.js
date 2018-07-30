@@ -1,7 +1,8 @@
 import * as connect from '@vkontakte/vkui-connect'
 
 import {VK_NEED_GO_BACK_EVENT, VK_WENT_BACK_EVENT,
-    GET_GEODATA_EVENT, UPDATE_NAVIGATION_STATE_EVENT, GET_USER_INFO_EVENT} from '../actions/vk'
+    GET_GEODATA_EVENT, UPDATE_NAVIGATION_STATE_EVENT, 
+    GET_USER_INFO_EVENT, updateInsets} from '../actions/vk'
 import {sendVKInfo, sendVKInfoFailed} from '../actions/auth'
 
 import locationHelper from '../helpers/locationHelper'
@@ -61,6 +62,8 @@ export default store => next => action => {
                 case 'VKWebAppGetUserInfoFailed':
                     next(sendVKInfoFailed());
                     return
+                case 'VKWebAppUpdateInsets':
+                    next(updateInsets(event.data.insets));
                 default:
                     return
             }

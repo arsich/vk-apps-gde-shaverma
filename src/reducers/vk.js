@@ -1,4 +1,4 @@
-import {VK_NEED_GO_BACK_EVENT, VK_WENT_BACK_EVENT} from '../actions/vk'
+import {VK_NEED_GO_BACK_EVENT, VK_WENT_BACK_EVENT, UPDATE_INSETS} from '../actions/vk'
 
 export default function locationReducer(state = {}, action = {}) {
     switch (action.type) {
@@ -11,6 +11,11 @@ export default function locationReducer(state = {}, action = {}) {
             return {
                 ...state,
                 needBack: false
+            };
+        case UPDATE_INSETS:
+            return {
+                ...state,
+                insets: action.data
             };
         default:
             return state;
