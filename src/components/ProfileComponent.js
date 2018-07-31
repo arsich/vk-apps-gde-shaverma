@@ -17,10 +17,11 @@ class ProfileComponent extends Component {
 
         const renderComment = (comment) => {
             return (
-                <UI.ListItem before={<UI.Avatar src={getImageUrl(comment.place.picture)} />}
+                <UI.ListItem before={<UI.Avatar type="image" src={getImageUrl(comment.place.picture)} />}
                     key={"comment_profile_" + comment.id}
-                    description={comment.text}
-                    onClick={this.handleShowPlace.bind(this, comment.place)}>{comment.place.name + ". " +comment.value + " из 5"}</UI.ListItem>
+                    description={comment.place.name}
+                    multiline
+                    onClick={this.handleShowPlace.bind(this, comment.place)}><div>{comment.value + " из 5"}<br/>{comment.text}</div></UI.ListItem>
             )
         }
 
@@ -30,12 +31,11 @@ class ProfileComponent extends Component {
             <UI.Panel id="profilePanel">
                 <UI.Group title="Мой профиль">
                     <UI.Div>
-                        <UI.Entity
-                            photo={user.photo_200}
-                            size={64}
-                            title={`${user.first_name} ${user.last_name}`}
-                            description={regDate ? `Ищет шаверму с ${getDateFromTimestamp(regDate)}` : null}>
-                        </UI.Entity>
+                        <UI.List>
+                            <UI.ListItem before={<UI.Avatar size={64} src={user.photo_200} />}
+                                    title={`${user.first_name} ${user.last_name}`}
+                                    description={regDate ? `Ищет шаверму с ${getDateFromTimestamp(regDate)}` : null}>{`${user.first_name} ${user.last_name}`}</UI.ListItem>
+                        </UI.List>
                     </UI.Div>
                 </UI.Group>
                 <UI.Group title="Мои оценки">

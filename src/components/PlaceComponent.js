@@ -26,8 +26,7 @@ const specialsStyle = {
     width: 90,
     height: 100,
     display: 'flex',
-    flexDirection:
-    'column',
+    flexDirection:'column',
     alignItems: 'center',
     textAlign: 'center',
     paddingLeft: 8,
@@ -95,20 +94,15 @@ class PlaceComponent extends Component {
                     : null
                 }
                 <UI.Group title="Рейтинг">
-                    <UI.Div>
-                        <UI.Entity
-                            photo={getIconForPlace(place)}
-                            avatarProps={{style: {backgroundColor: 'white'}}}
-                            size={64}
-                            title={getRatingForPlace(place)}
-                            description={"Человек оценило: " + place.ratesCount}>
-                        </UI.Entity>
-                    </UI.Div>
+                    <UI.List>
+                        <UI.ListItem before={<UI.Avatar type="image" size={64} style={{backgroundColor: 'white'}} src={getIconForPlace(place)} />}
+                            description={"Всего оценок: " + place.ratesCount}>{getRatingForPlace(place)}</UI.ListItem>
+                    </UI.List>
                 </UI.Group>
                 {hasSpecials ?
                 <UI.Group title="Особенности">
                     <UI.HorizontalScroll>
-                        <UI.Div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <UI.Div style={{ display: 'flex' }}>
                         {place.supplierId > 0 ? 
                             <div style={specialsStyle}>
                                 <UI.Avatar size={64} style={specialsAvatarStyle} src={icSupplier}/>

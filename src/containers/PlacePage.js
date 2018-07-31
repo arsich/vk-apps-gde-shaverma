@@ -62,39 +62,12 @@ class PlacePage extends Component {
     openRatingDialog = () => {
         this.setState({
             ratingDialog:
-                <UI.Alert
-                    actions={[{
-                      title: 'Отмена',
-                      autoclose: true,
-                      action: ()=> {
-
-                      },
-                      style: 'cancel'
-                    }, {
-                      title: 'Сохранить',
-                      autoclose: true,
-                      action: ()=> {
-                          this.updateRating()
-                      },
-                      style: 'destructive'
-                    }]}
-                    onClose={ () => this.setState({ ratingDialog: null }) }
-                >
-                    <UI.FormLayout>
-                        <UI.Slider
-                            min={0.5}
-                            max={5}
-                            value={Number(this.state.ratingValue)}
-                            step={0.5}
-                            onChange={ratingValue => this.setState({ratingValue})}
-                            top={<p>Моя оценка: <b>{this.state.ratingValue}</b></p>}
-                        />
-                        <UI.Textarea top="Комментарий"
-                                  value={this.state.ratingComment}
-                                  onChange={e => { this.setState({ratingComment: e.target.value})}}
-                                  placeholder="Что понравилось, что можно улучшить" />
-                    </UI.FormLayout>
-                </UI.Alert>
+                <RatingDialog handleClose={ () => this.setState({ ratingDialog: null }) }
+                    defaultValue={this.state.ratingValue}
+                    defaultComment={this.state.ratingComment}
+                    handleSave={this.updateRating}
+                    handleRatingValueChange={ratingValue => this.setState({ratingValue})}
+                    handleRatingCommentChange={ratingComment => { this.setState({ratingComment})}} />
         })
     }
 
@@ -143,6 +116,64 @@ const mapStateToProps = (state, ownProps) => {
         goBack: ownProps.history.goBack,
         userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200,
         ratingUpdated: state.places && state.places.ratingUpdated
+    }
+}
+
+class RatingDialog extends Component {
+    constructor(props) {
+        super(props)
+
+        const value = props.defaultValue || 5
+        const comment = props.defaultComment || ''
+
+        this.state = {
+            ratingValue: value,
+            ratingComment: comment
+        }
+    }
+
+    render() {
+        return (
+            <UI.Alert
+                actions={[{
+                    title: 'Отмена',
+                    autoclose: true,
+                    action: ()=> {
+
+                    },
+                    style: 'cancel'
+                }, {
+                    title: 'Сохранить',
+                    autoclose: true,
+                    action: ()=> {
+                        this.props.handleSave()
+                    },
+                    style: 'destructive'
+                }]}
+                onClose={ () => this.props.handleClose() }
+            >
+                <UI.FormLayout>
+                    <UI.Slider
+                        min={0.5}
+                        max={5}
+                        value={Number(this.state.ratingValue)}
+                        step={0.5}
+                        onChange={ratingValue => {
+                            this.setState({ratingValue})
+                            this.props.handleRatingValueChange(ratingValue)
+                        }}
+                        top={<p>Моя оценка: <b>{this.state.ratingValue}</b></p>}
+                    />
+                    <UI.Textarea top="Комментарий"
+                                value={this.state.ratingComment}
+                                onChange={e => { 
+                                    this.setState({ratingComment: e.target.value})
+                                    this.props.handleRatingCommentChange(e.target.value)
+                                }}
+                                placeholder="Что понравилось, что можно улучшить" />
+                </UI.FormLayout>
+            </UI.Alert>
+        );
     }
 }
 
