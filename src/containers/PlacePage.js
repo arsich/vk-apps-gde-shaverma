@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import * as UI from '@vkontakte/vkui';
 
 import {getPlaceInfo, addRating, deleteRating} from '../actions/places'
-import {updateNavigation} from '../actions/vk'
+import {updateNavigation, setLocationForVK, shareVK, goBack} from '../actions/vk'
 
 import PlaceComponent from '../components/PlaceComponent'
 
@@ -50,8 +50,17 @@ class PlacePage extends Component {
     }
 
     componentDidMount() {
-        const {getPlaceInfo, placeId} = this.props
+        const {getPlaceInfo, placeId, setLocationForVK} = this.props
         getPlaceInfo(placeId)
+        setLocationForVK(placeId)
+    }
+
+    shareVK = () => {
+        this.props.shareVK()
+    }
+
+    goBack = () => {
+        this.props.goBackVK()
     }
 
     updateRating = () => {
@@ -84,6 +93,8 @@ class PlacePage extends Component {
                                 id="mainPanel"
                                 openRatingDialog={this.openRatingDialog}
                                 deleteRating={this.deleteRating}
+                                goBack={this.goBack}
+                                shareVK={this.shareVK}
                                 userAvatar={userAvatar}/>
                 <UI.Panel id="loadingPanel">
                     <UI.ScreenSpinner />
@@ -104,6 +115,9 @@ PlacePage.propTypes = {
     updateNavigation: PropTypes.func.isRequired,
     addRating: PropTypes.func.isRequired,
     deleteRating: PropTypes.func.isRequired,
+    shareVK: PropTypes.func.isRequired,
+    goBackVK: PropTypes.func.isRequired,
+    setLocationForVK: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired
 }
 
@@ -178,5 +192,6 @@ class RatingDialog extends Component {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPlaceInfo, updateNavigation, addRating, deleteRating
+    getPlaceInfo, updateNavigation, addRating, deleteRating, 
+    setLocationForVK, shareVK, goBackVK: goBack
 })(PlacePage))

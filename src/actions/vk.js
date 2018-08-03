@@ -54,6 +54,12 @@ export function updateNavigation(can_back, can_forward) {
 }
 
 export const VK_NEED_GO_BACK_EVENT = "vk_need_go_back_event"
+export function goBack() {
+    return {
+        type: VK_NEED_GO_BACK_EVENT
+    }
+}
+
 export const VK_WENT_BACK_EVENT = "vk_went_back_event"
 
 export const UPDATE_INSETS = 'vk_update_insets'
@@ -63,4 +69,25 @@ export function updateInsets(insets) {
         type: UPDATE_INSETS,
         data: insets
     }
+}
+
+export const VK_SET_LOCATION = 'VKWebAppSetLocation'
+
+export function setLocationForVK(location) {
+    return {[CALL_VKUI_CONNECT]: {
+        type: VK_SET_LOCATION,
+        data: {
+            location
+        }
+    }}
+}
+export const VK_SHARE = 'VKWebAppShare'
+
+export function shareVK(link) {
+    return {[CALL_VKUI_CONNECT]: {
+        type: VK_SHARE,
+        data: {
+            link
+        }
+    }}
 }

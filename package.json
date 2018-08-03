@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@vkontakte/icons": "^1.0.3",
-    "@vkontakte/vkui": "^2.5.4",
+    "@vkontakte/vkui": "^2.5.7",
     "@vkontakte/vkui-connect": "^1.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",

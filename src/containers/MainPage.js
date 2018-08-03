@@ -26,12 +26,23 @@ class MainPage extends Component {
         this.state = {
             activeTab: lastActiveTap
         };
+        this.checkHash(props);
     }
 
     componentDidMount() {
         const {getPlacesNearby, lastUserLocation} = this.props
         if (!this.props.places || !this.props.places.length) {
             getPlacesNearby(lastUserLocation.lat, lastUserLocation.lng)
+        }
+    }
+
+    checkHash(props) {
+        if (props.hash) {
+            const id = props.hash.replace("#", "")
+            if (!isNaN(id)) {
+                props.pushLocation(`/place/${id}`)
+                this.props.updateNavigation(true, false)
+            }
         }
     }
 
@@ -51,8 +62,9 @@ class MainPage extends Component {
         const isProfile = this.state.activeTab === PROFILE
         return (
             <UI.Root activeView="view1">
-            <UI.View activePanel="panel_content" header={false} id="view1">
+            <UI.View activePanel="panel_content" id="view1">
                 <UI.Panel id="panel_content">
+                    <UI.PanelHeader noShadow>Где Шаверма</UI.PanelHeader>
                     <div className="main_content">
                         {isMap ?
                             <MapComponent places={places}
@@ -99,7 +111,8 @@ MainPage.propTypes = {
 const mapStateToProps = (state, ownProps) => {
     const places = state.places && state.places.listNearby ? state.places.listNearby : []
     const location = state.location ? state.location.lastRequestedLocation || state.location.lastUserLocation : null
-    return {places, lastUserLocation: location, pushLocation: ownProps.history.push}
+    const hash = ownProps.history.location.hash;
+    return {places, lastUserLocation: location, pushLocation: ownProps.history.push, hash}
 }
 
 export default withRouter(connect(mapStateToProps, {

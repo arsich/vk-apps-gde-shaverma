@@ -7,6 +7,10 @@ import Icon24Recent from '@vkontakte/icons/dist/24/recent';
 import Icon24MoneyCircle from '@vkontakte/icons/dist/24/money_circle';
 import Icon24Phone from '@vkontakte/icons/dist/24/phone';
 import Icon24Globe from '@vkontakte/icons/dist/24/globe';
+import Icon24Share from '@vkontakte/icons/dist/24/share_external';
+import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
+import Icon24Back from '@vkontakte/icons/dist/24/back';
+import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 
 import './PlaceComponent.css'
 
@@ -40,6 +44,17 @@ const specialsAvatarStyle = {
 }
 
 class PlaceComponent extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            contextOpened: false
+        }
+    }
+
+    toggleContext = () => {
+        this.setState({ contextOpened: !this.state.contextOpened })
+    }
+
     render() {
         const place = this.props.place || {}
 
@@ -60,9 +75,22 @@ class PlaceComponent extends Component {
 
         return (
             <UI.Panel id={this.props.id}>
-                <UI.PanelHeader>
+                <UI.PanelHeader
+                    left={<UI.HeaderButton onClick={this.props.goBack}>{UI.platform() === UI.IOS ? <Icon28ChevronBack /> : <Icon24Back />}</UI.HeaderButton>}
+                >
+                    <UI.PanelHeaderContent aside={<Icon16Dropdown />} onClick={this.toggleContext}>
                     {place.name}
+                    </UI.PanelHeaderContent>
                 </UI.PanelHeader>
+                <UI.HeaderContext opened={this.state.contextOpened} onClose={this.toggleContext}>
+                    <UI.List>
+                    <UI.ListItem
+                        before={<Icon24Share />}
+                        onClick={this.props.shareVK}>
+                        Поделиться
+                    </UI.ListItem>
+                    </UI.List>
+                </UI.HeaderContext>
                 <img src={getImageForPlace(place)} className="imageBig" alt={place.name} />
                 <UI.Group title={place.description}>
                     <UI.Div>
@@ -174,6 +202,8 @@ PlaceComponent.propTypes = {
     place: PropTypes.object,
     userAvatar: PropTypes.string,
     openRatingDialog: PropTypes.func,
+    shareVK: PropTypes.func,
+    goBack: PropTypes.func,
     deleteRating: PropTypes.func
 }
 
