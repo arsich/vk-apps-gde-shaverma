@@ -31,21 +31,21 @@ class LoadingPage extends Component {
                             <UI.ScreenSpinner />
                         </UI.Panel>
                         <UI.Panel id="introPanel">
-                            <UI.Div style={{backgroundColor: '#ffffff', paddingTop: '20px', paddingBottom: '80px'}} 
+                            <UI.Div style={{backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: '80px'}} 
                                 className="fullHeight">
                                 <UI.Gallery bullets="dark" 
-                                    style={{height: '100%', textAlign: 'center'}}>
+                                    style={{height: 'auto', textAlign: 'center'}}>
                                     <div>
                                         <img src={introOne} className="intro_image"/>
-                                        <p>Найди лучшую шаверму рядом<br/> в самой большой базе точек</p>
+                                        <p style={{paddingBottom: 16}}>Найди лучшую шаверму рядом<br/> в самой большой базе точек</p>
                                     </div>
                                     <div>
                                         <img src={introTwo} className="intro_image"/>
-                                        <p>Читай в отзывах, где вкусно<br/> и безопасно перекусить</p>
+                                        <p style={{paddingBottom: 16}}>Читай в отзывах, где вкусно<br/> и безопасно перекусить</p>
                                     </div>
                                     <div>
                                         <img src={introThree} className="intro_image"/>
-                                        <p>Смотри рейтинг, часы работы,<br/> цены и акции в заведениях</p>
+                                        <p style={{paddingBottom: 16}}>Смотри рейтинг, часы работы,<br/> цены и акции в заведениях</p>
                                     </div>
                                 </UI.Gallery>
                             </UI.Div>
