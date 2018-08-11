@@ -86,10 +86,11 @@ class PlacePage extends Component {
     }
 
     render() {
-        const {place, userAvatar} = this.props;
+        const {place, userAvatar, user} = this.props;
         return (
             <UI.View id="mainView" activePanel={this.state.activePanel} popout={this.state.ratingDialog}>
                 <PlaceComponent place={place}
+                                user={user}
                                 id="mainPanel"
                                 openRatingDialog={this.openRatingDialog}
                                 deleteRating={this.deleteRating}
@@ -106,6 +107,7 @@ class PlacePage extends Component {
 
 PlacePage.propTypes = {
     place: PropTypes.object,
+    user: PropTypes.object,
     placeLoading: PropTypes.bool,
     needBack: PropTypes.bool,
     ratingUpdated: PropTypes.bool,
@@ -128,6 +130,7 @@ const mapStateToProps = (state, ownProps) => {
         placeId: ownProps.match.params.placeId,
         needBack: state.vk && state.vk.needBack,
         goBack: ownProps.history.goBack,
+        user: state.auth.vkInfo,
         userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200,
         ratingUpdated: state.places && state.places.ratingUpdated
     }

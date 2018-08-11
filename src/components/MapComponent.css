@@ -5,14 +5,16 @@
 }
 .mapLabel {
     position: absolute;
-    top: 10px;
-    left: 30px;
-    width: auto;
-    background-color: rgba(255, 255, 255, 0.8);
+    top: 15px;
+    left: 55px;
+    max-width: 130px;
+    background-color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.2));
+    border-radius: 3px;
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 5px 5px 5px 30px;
-    display: inline-block;
+    padding: 5px 10px 5px 10px;
 }
 
 .noCaption {
@@ -26,5 +28,5 @@
     width: auto;
     height: 60px;
 
-    filter: drop-shadow(2px 2px 2px #222);
+    filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.4));
 }

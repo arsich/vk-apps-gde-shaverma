@@ -36,14 +36,28 @@ export function getRatingForPlace(place) {
     return "Рейтинг: " + rating.replace(".", ",") + " из 5"
 }
 
+export function getRatingString(value) {
+    if (!value) {
+        return "—"
+    }
+    let rating = "" + value
+    rating = rating.substring(0, 4);
+    if (rating.endsWith(".0")) {
+        rating.replace(".0", "")
+    }
+    return rating.replace(".", ",")
+}
+
 export function getImageForPlace(place) {
     return `https://gdeshaverma.ru${place.picture}`
 }
 
 export function getDateFromTimestamp(timestamp) {
+    if (!timestamp) return ''
+    
     const date = new Date()
     date.setTime(timestamp * 1000)
-    return date.toLocaleDateString()
+    return date.toLocaleDateString("ru")
 }
 
 export function getImageUrl(url) {

@@ -15,7 +15,7 @@ import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import './PlaceComponent.css'
 
 import {getImageForPlace, getIconForPlace,
-    getRatingForPlace, getDateFromTimestamp, getImageUrl, getUrl} from '../helpers/placeUtils'
+    getRatingForPlace, getDateFromTimestamp, getImageUrl, getUrl, getRatingString} from '../helpers/placeUtils'
 
 import icBeer from '../assets/ic_beer_circle.png'
 import icWC from '../assets/ic_wc_circle.png'
@@ -24,6 +24,8 @@ import icCoal from '../assets/ic_coal_circle.png'
 import icSupplier from '../assets/ic_supplier_circle.png'
 import icCard from '../assets/ic_card_circle.png'
 import icHyg from '../assets/ic_hyg_circle.png'
+
+import Footer from './Footer'
 
 const specialsStyle = {
     flexShrink: 0,
@@ -57,15 +59,19 @@ class PlaceComponent extends Component {
 
     render() {
         const place = this.props.place || {}
+        const user = this.props.user || {}
 
         const renderComment = (comment) => {
             return (
-                <UI.Div  key={"comment_" + comment.id}>
+                <UI.Div key={"comment_" + comment.id}>
                     <UI.Entity photo={getImageUrl(comment.user.photoSmall)}
                                size={64}
-                               title={comment.value + " из 5"}
-                               description={comment.user.firstName + " " + comment.user.lastName + " " + getDateFromTimestamp(comment.date)}>
-                        <div>{comment.text}</div>
+                               title={comment.user.firstName + " " + comment.user.lastName}
+                               description={<div style={{marginTop: 5}}>
+                                    <div className='ratingLabel'>{getRatingString(comment.value)}</div>
+                                    {getDateFromTimestamp(comment.date)}
+                                </div>}>
+                        <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{comment.text}</div>
                     </UI.Entity>
                 </UI.Div>)
         }
@@ -92,16 +98,15 @@ class PlaceComponent extends Component {
                     </UI.List>
                 </UI.HeaderContext>
                 <img src={getImageForPlace(place)} className="imageBig" alt={place.name} />
-                <UI.Group title={place.description}>
-                    <UI.Div>
-                        <UI.List>
-                            <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
-                            {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
-                            {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
-                            {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}>{place.phoneNumber}</UI.ListItem> : null }
-                            {place.site ? <a href={getUrl(place.site)} target="_blank"><UI.ListItem before={<Icon24Globe />}>{place.site}</UI.ListItem></a> : null }
-                        </UI.List>
-                    </UI.Div>
+                <UI.Group title="Инфо">
+                    <UI.Div style={{lineHeight: 1.5}}>{place.description}</UI.Div>
+                    <UI.List className="bottomPaddingGroup">
+                        <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
+                        {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
+                        {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
+                        {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}>{place.phoneNumber}</UI.ListItem> : null }
+                        {place.site ? <UI.ListItem before={<Icon24Globe />}><UI.Link href={getUrl(place.site)} target="_blank">{place.site}</UI.Link></UI.ListItem> : null }
+                    </UI.List>
                 </UI.Group>
                 {!place.rateByDeviceBanned ?
                     <UI.Group title="Мой отзыв">
@@ -109,11 +114,14 @@ class PlaceComponent extends Component {
                             <UI.Entity
                                 photo={this.props.userAvatar}
                                 size={64}
-                                style={{paddingBottom: 8}}
-                                title={place.rateByDevice ? `Оценка ${place.rateByDevice} из 5` : 'Вы еще не поставили оценку'}
-                                description={place.rateByDeviceText}>
+                                style={{paddingBottom: 12}}
+                                title={`${user.first_name} ${user.last_name}`}
+                                description={place.rateByDevice ? <div style={{marginTop: 5}}><div className='ratingLabel'>{getRatingString(place.rateByDevice)}</div>{getDateFromTimestamp(place.rateByDeviceDate)}</div> 
+                                : <div style={{fontWeight: 'normal', marginTop: 5}}>Вы еще не поставили оценку</div>}
+                                >
+                                {place.rateByDeviceText ? <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{place.rateByDeviceText}</div> : null}
                                 <UI.Button level="buy" 
-                                    style={{marginTop: 4}}
+                                    style={{marginTop: 16}}
                                     onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
                                 {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
                             </UI.Entity>
@@ -122,15 +130,15 @@ class PlaceComponent extends Component {
                     : null
                 }
                 <UI.Group title="Рейтинг">
-                    <UI.List>
+                    <UI.List className="bottomPaddingGroup">
                         <UI.ListItem before={<UI.Avatar type="image" size={64} style={{backgroundColor: 'white'}} src={getIconForPlace(place)} />}
                             description={"Всего оценок: " + place.ratesCount}>{getRatingForPlace(place)}</UI.ListItem>
                     </UI.List>
                 </UI.Group>
                 {hasSpecials ?
                 <UI.Group title="Особенности">
-                    <UI.HorizontalScroll>
-                        <UI.Div style={{ display: 'flex' }}>
+                    <UI.HorizontalScroll className="bottomPaddingGroup">
+                        <div style={{ display: 'flex' }}>
                         {place.supplierId > 0 ? 
                             <div style={specialsStyle}>
                                 <UI.Avatar size={64} style={specialsAvatarStyle} src={icSupplier}/>
@@ -173,26 +181,25 @@ class PlaceComponent extends Component {
                                 Гигиена на&nbsp;кухне
                             </div>
                         : null }
-                        </UI.Div>
+                        </div>
                     </UI.HorizontalScroll>
                 </UI.Group>
                 : null }
                 {hasComments ?
-                    <UI.Group title="Последние отзывы">
+                    <UI.Group title="Последние отзывы" className="bottomPaddingGroup">
                         {place.comments.map(renderComment)}
                     </UI.Group>
                 : null}
                 {place.lastDiscount ?
                     <UI.Group title="Акции">
-                        <UI.Div>
-                            <div>
-                                {getDateFromTimestamp(place.lastDiscount.date)}
-                                <img src={getImageUrl(place.lastDiscount.picture)} className="imageBig" alt={place.name} />
-                                <p>{place.lastDiscount.text}</p>
-                            </div>
+                        <UI.Div style={{fontSize: 14, lineHeight: 1.5}}>
+                            <img src={getImageUrl(place.lastDiscount.picture)} style={{marginBottom: 10}} className="imageBig" alt={place.name} />
+                            {place.lastDiscount.text}<br/>
+                            <div style={{color: UI.colors.captionGray, marginTop: 6, marginBottom: 15}}>{getDateFromTimestamp(place.lastDiscount.date)}</div>
                         </UI.Div>
                     </UI.Group>
                     : null }
+                <Footer/>
             </UI.Panel>)
     }
 }
@@ -200,6 +207,7 @@ class PlaceComponent extends Component {
 
 PlaceComponent.propTypes = {
     place: PropTypes.object,
+    user: PropTypes.object,
     userAvatar: PropTypes.string,
     openRatingDialog: PropTypes.func,
     shareVK: PropTypes.func,

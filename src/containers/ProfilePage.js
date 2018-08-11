@@ -14,10 +14,11 @@ class ProfilePage extends Component {
         }
     }
     render() {
-        const {user, profile, handleShowPlace} = this.props
+        const {user, profile, handleShowPlace, profileLoading} = this.props
         return (
             <ProfileComponent user={user}
                               profile={profile}
+                              profileLoading={profileLoading}
                               handleShowPlace={handleShowPlace} />
         )
     }
@@ -27,6 +28,7 @@ ProfilePage.propTypes = {
     user: PropTypes.object,
     userId: PropTypes.number,
     profile: PropTypes.object,
+    profileLoading: PropTypes.bool,
     handleShowPlace: PropTypes.func
 }
 
@@ -34,7 +36,8 @@ const mapStateToProps = (state, ownProps) => {
     const user = state.auth.vkInfo
     const userId = state.auth.authInfo.userId
     const profile = state.auth.profileInfo
-    return {user, profile, userId}
+    const profileLoading = state.auth.profileLoading
+    return {user, profile, userId, profileLoading}
 }
 
 export default withRouter(connect(mapStateToProps, {

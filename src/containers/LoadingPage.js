@@ -16,6 +16,8 @@ import {isWebView} from '@vkontakte/vkui/src/lib/webview';
 
 import './LoadingPage.css'
 
+const introTextStyle={paddingBottom: 36, lineHeight: 1.5}
+
 class LoadingPage extends Component {
     render() {
         if (this.props.hasAuth && this.props.hasLocation && this.props.introShown) {
@@ -37,21 +39,21 @@ class LoadingPage extends Component {
                                     style={{height: 'auto', textAlign: 'center'}}>
                                     <div>
                                         <img src={introOne} className="intro_image"/>
-                                        <p style={{paddingBottom: 16}}>Найди лучшую шаверму рядом<br/> в самой большой базе точек</p>
+                                        <p style={introTextStyle}>Найди лучшую шаверму рядом<br/> в самой большой базе точек</p>
                                     </div>
                                     <div>
                                         <img src={introTwo} className="intro_image"/>
-                                        <p style={{paddingBottom: 16}}>Читай в отзывах, где вкусно<br/> и безопасно перекусить</p>
+                                        <p style={introTextStyle}>Читай в отзывах, где вкусно<br/> и безопасно перекусить</p>
                                     </div>
                                     <div>
                                         <img src={introThree} className="intro_image"/>
-                                        <p style={{paddingBottom: 16}}>Смотри рейтинг, часы работы,<br/> цены и акции в заведениях</p>
+                                        <p style={introTextStyle}>Смотри рейтинг, часы работы,<br/> цены и акции в заведениях</p>
                                     </div>
                                 </UI.Gallery>
                             </UI.Div>
                             <UI.FixedLayout vertical="bottom">
                                 <UI.Div style={{display: 'flex'}}>
-                                    <UI.Button level="buy" size="xl" onClick={this.props.hideIntro}>Найти шаверму</UI.Button>
+                                    <UI.Button level="buy" size="xl" style={{height: 52}} onClick={this.props.hideIntro}>Найти шаверму</UI.Button>
                                 </UI.Div>
                             </UI.FixedLayout>
                         </UI.Panel>

@@ -34,6 +34,10 @@ class MapComponent extends Component {
         }
     }
 
+    handlePlacemarkClicked = (place) => {
+        this.props.handleShowPlace(place)
+    }
+
     render() {
         const renderPlaceMark = (place, i) => {
             const showCaption = this.state.zoom > 14
@@ -66,11 +70,11 @@ class MapComponent extends Component {
                                   iconShape: {
                                     type: 'Rectangle',
                                     coordinates: [
-                                      [-60, -60], [30, 0]
+                                      [-60, -60], [100, 0]
                                     ]
                                   }
                               }}
-                              onBalloonOpen={this.handleBalloonClicked.bind(this, place)}
+                              onClick={this.handlePlacemarkClicked.bind(this, place)}
                     />
         }
         const {map} = this.state;

@@ -1,5 +1,5 @@
 import {NEW_AUTH_INFO, GET_VK_USER_INFO_SUCCESS, 
-    GET_MY_PROFILE_SUCCESS, HIDE_INTRO} from '../actions/auth'
+    GET_MY_PROFILE, GET_MY_PROFILE_SUCCESS, GET_MY_PROFILE_FAILED, HIDE_INTRO} from '../actions/auth'
 
 export default function authReducer(state = {hasAuth: false, introShown: false}, action = {}) {
     switch (action.type) {
@@ -14,10 +14,21 @@ export default function authReducer(state = {hasAuth: false, introShown: false},
                 ...state,
                 vkInfo: action.data
             };
+        case GET_MY_PROFILE:
+            return {
+                ...state,
+                profileLoading: true
+            };
         case GET_MY_PROFILE_SUCCESS:
             return {
                 ...state,
-                profileInfo: action.result.result
+                profileInfo: action.result.result,
+                profileLoading: false
+            }
+        case GET_MY_PROFILE_FAILED:
+            return {
+                ...state,
+                profileLoading: false
             }
         case HIDE_INTRO:
             return {

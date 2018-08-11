@@ -30,7 +30,6 @@ export default store => next => action => {
         next({type: VK_WENT_BACK_EVENT})
     }
 
-    // test code remove it
     if (action[CALL_VKUI_CONNECT].type === GET_USER_INFO_EVENT && !connect.supports(GET_USER_INFO_EVENT)) {
         next(sendVKInfoFailed());
     }
