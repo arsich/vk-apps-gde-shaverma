@@ -11,8 +11,8 @@ class Footer extends Component {
         const appStore = isIos ? 'App Store' : 'Google Play'
         return (
             <div className="footer" style={{paddingBottom: 16, paddingTop: 8}}>
-                <UI.Link href='https://vk.com/gdeshaverma' target="_blank"><UI.Button level="3" component="a">Группа</UI.Button></UI.Link>
-                <UI.Link href={appLink} target="_blank"><UI.Button level="3" component="a">{appStore}</UI.Button></UI.Link>
+                <UI.Button level="3" component="a" href='https://vk.com/gdeshaverma' target="_blank">Группа</UI.Button>
+                <UI.Button level="3" component="a" href={appLink} target="_blank">{appStore}</UI.Button>
             </div>
         );
     }

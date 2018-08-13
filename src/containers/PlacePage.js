@@ -9,6 +9,8 @@ import {updateNavigation, setLocationForVK, shareVK, goBack} from '../actions/vk
 
 import PlaceComponent from '../components/PlaceComponent'
 
+import {isWebView} from '@vkontakte/vkui/src/lib/webview'
+
 class PlacePage extends Component {
 
     constructor(props) {
@@ -88,19 +90,23 @@ class PlacePage extends Component {
     render() {
         const {place, userAvatar, user} = this.props;
         return (
-            <UI.View id="mainView" activePanel={this.state.activePanel} popout={this.state.ratingDialog}>
-                <PlaceComponent place={place}
-                                user={user}
-                                id="mainPanel"
-                                openRatingDialog={this.openRatingDialog}
-                                deleteRating={this.deleteRating}
-                                goBack={this.goBack}
-                                shareVK={this.shareVK}
-                                userAvatar={userAvatar}/>
-                <UI.Panel id="loadingPanel">
-                    <UI.ScreenSpinner />
-                </UI.Panel>
-            </UI.View>
+            <UI.ConfigProvider insets={this.props.insets} isWebView={isWebView}>
+                <UI.Root activeView="mainView">
+                    <UI.View id="mainView" activePanel={this.state.activePanel} popout={this.state.ratingDialog}>
+                        <PlaceComponent place={place}
+                                        user={user}
+                                        id="mainPanel"
+                                        openRatingDialog={this.openRatingDialog}
+                                        deleteRating={this.deleteRating}
+                                        goBack={this.goBack}
+                                        shareVK={this.shareVK}
+                                        userAvatar={userAvatar}/>
+                        <UI.Panel id="loadingPanel">
+                            <UI.ScreenSpinner />
+                        </UI.Panel>
+                    </UI.View>
+                </UI.Root>
+            </UI.ConfigProvider>
         )
     }
 }
@@ -108,6 +114,7 @@ class PlacePage extends Component {
 PlacePage.propTypes = {
     place: PropTypes.object,
     user: PropTypes.object,
+    insets: PropTypes.object,
     placeLoading: PropTypes.bool,
     needBack: PropTypes.bool,
     ratingUpdated: PropTypes.bool,
@@ -132,7 +139,8 @@ const mapStateToProps = (state, ownProps) => {
         goBack: ownProps.history.goBack,
         user: state.auth.vkInfo,
         userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200,
-        ratingUpdated: state.places && state.places.ratingUpdated
+        ratingUpdated: state.places && state.places.ratingUpdated,
+        insets: state.vk.insets
     }
 }
 

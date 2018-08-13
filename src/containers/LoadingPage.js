@@ -12,7 +12,7 @@ import introTwo from '../assets/intro_two.jpg'
 import introThree from '../assets/intro_three.jpg'
 
 
-import {isWebView} from '@vkontakte/vkui/src/lib/webview';
+import {isWebView} from '@vkontakte/vkui/src/lib/webview'
 
 import './LoadingPage.css'
 
