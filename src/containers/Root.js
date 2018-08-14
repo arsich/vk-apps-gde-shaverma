@@ -13,7 +13,7 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 const Root = ({ store }) => (
     <Provider store={store}>
-        <div className="fullHeight">
+        <div>
             <PrivateRoute exact path="/" component={MainPage} data={store.getState()} />
             <PrivateRoute path="/place/:placeId" component={PlacePage} data={store.getState()} />
             <Route path="/loading" component={LoadingPage} />

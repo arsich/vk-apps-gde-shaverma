@@ -38,15 +38,15 @@ class LoadingPage extends Component {
                                 <UI.Gallery bullets="dark" 
                                     style={{height: 'auto', textAlign: 'center'}}>
                                     <div>
-                                        <img src={introOne} className="intro_image"/>
+                                        <img src={introOne} className="intro_image" alt="Места рядом"/>
                                         <p style={introTextStyle}>Найди лучшую шаверму рядом<br/> в самой большой базе точек</p>
                                     </div>
                                     <div>
-                                        <img src={introTwo} className="intro_image"/>
+                                        <img src={introTwo} className="intro_image" alt="Много отзывов"/>
                                         <p style={introTextStyle}>Читай в отзывах, где вкусно<br/> и безопасно перекусить</p>
                                     </div>
                                     <div>
-                                        <img src={introThree} className="intro_image"/>
+                                        <img src={introThree} className="intro_image" alt="Вся информация о заведениях"/>
                                         <p style={introTextStyle}>Смотри рейтинг, часы работы,<br/> цены и акции в заведениях</p>
                                     </div>
                                 </UI.Gallery>

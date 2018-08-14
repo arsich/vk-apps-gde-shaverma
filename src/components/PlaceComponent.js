@@ -76,7 +76,7 @@ class PlaceComponent extends Component {
                 </UI.Div>)
         }
 
-        const hasComments = place.comments.length > 0
+        const hasComments = place.comments && place.comments.length > 0
         const hasSpecials = place.supplierId > 0 || place.hasVisa || place.hasFalafel || place.hasBeer || place.hasWC || place.hasOnCoal || place.hasHygiene
 
         return (

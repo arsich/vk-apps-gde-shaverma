@@ -1,0 +1,3 @@
+.noPaddingFromPanel > div {
+    padding-top: 0 !important;
+}

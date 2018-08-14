@@ -63,6 +63,7 @@ export default store => next => action => {
                     return
                 case 'VKWebAppUpdateInsets':
                     next(updateInsets(event.data.insets));
+                    return
                 default:
                     return
             }

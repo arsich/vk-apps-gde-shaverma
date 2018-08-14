@@ -78,13 +78,13 @@ class MapComponent extends Component {
                     />
         }
         const {map} = this.state;
-        return <YMaps>
-            <Map state={map} width="100%" height="100%"
-                 onBoundsChange={this.handleBoundsChange}
-                 onActionEnd={this.handleLocationChanged}>
-                {this.props.places.map(renderPlaceMark)}
-            </Map>
-        </YMaps>;
+        return <YMaps  width="100%" height="100vh">
+                <Map state={map} width="100%" height="100vh"
+                    onBoundsChange={this.handleBoundsChange}
+                    onActionEnd={this.handleLocationChanged}>
+                    {this.props.places.map(renderPlaceMark)}
+                </Map>
+            </YMaps>;
     }
 }
 

@@ -5,7 +5,7 @@ import {initVK, setTitle, getUserInfo} from '../actions/vk'
 
 const AUTH_USER_KEY = 'key_auth_user_info'
 const VK_INFO_KEY = 'key_vk_info_user'
-const INTRO_SHOWN = 'key_intro_shown'
+const INTRO_SHOWN = 'key_intro_app_shown'
 
 class AuthHelper {
     init(store) {

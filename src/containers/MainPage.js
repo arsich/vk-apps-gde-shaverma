@@ -10,8 +10,6 @@ import * as UI from '@vkontakte/vkui';
 
 import MapComponent from '../components/MapComponent'
 
-import './MainPage.css'
-
 import ProfilePage from './ProfilePage'
 
 const MAP = 'map'
@@ -65,18 +63,7 @@ class MainPage extends Component {
             <UI.View activePanel="panel_content" id="view1">
                 <UI.Panel id="panel_content">
                     <UI.PanelHeader noShadow>Где Шаверма</UI.PanelHeader>
-                    <div className="main_content">
-                        {isMap ?
-                            <MapComponent places={places}
-                                          location={lastUserLocation}
-                                          handleShowPlace={this.handleShowPlace}
-                                          handleLocationChanged={this.handleLocationChanged} />
-                            : null}
-                        {isProfile ?
-                            <ProfilePage handleShowPlace={this.handleShowPlace}/>
-                            : null}
-                    </div>
-                    <UI.FixedTabs>
+                    <UI.Tabs theme={UI.platform() === UI.IOS ? "light" : "header"}>
                         <UI.TabsItem
                             onClick={() => {
                                 lastActiveTap = MAP
@@ -95,7 +82,16 @@ class MainPage extends Component {
                         >
                             Профиль
                         </UI.TabsItem>
-                    </UI.FixedTabs>
+                    </UI.Tabs>
+                    {isMap ?
+                        <MapComponent places={places}
+                                        location={lastUserLocation}
+                                        handleShowPlace={this.handleShowPlace}
+                                        handleLocationChanged={this.handleLocationChanged} />
+                        : null}
+                    {isProfile ?
+                        <ProfilePage handleShowPlace={this.handleShowPlace}/>
+                        : null}
                 </UI.Panel>
             </UI.View>
             </UI.Root>

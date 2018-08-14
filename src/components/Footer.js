@@ -6,7 +6,7 @@ import './Footer.css'
 class Footer extends Component {
 
     render() {
-        const isIos = UI.platform() == UI.IOS
+        const isIos = UI.platform() === UI.IOS
         const appLink = isIos ? 'https://itunes.apple.com/ru/app/gde-saverma-poisk-saurmy-v/id1141097185' : 'https://play.google.com/store/apps/details?id=ru.gdeshaverma.android'
         const appStore = isIos ? 'App Store' : 'Google Play'
         return (

@@ -6,6 +6,8 @@ import {getDateFromTimestamp, getImageUrl, getRatingString} from '../helpers/pla
 
 import Footer from './Footer'
 
+import './ProfileComponent.css'
+
 class ProfileComponent extends Component {
     handleShowPlace(place) {
         this.props.handleShowPlace(place)
@@ -18,6 +20,7 @@ class ProfileComponent extends Component {
         const regDate = profile && profile.userInfo.registrationDate
 
         const renderComment = (comment) => {
+            console.log(comment);
             return (
                 <UI.ListItem
                     multiline
@@ -42,7 +45,7 @@ class ProfileComponent extends Component {
         const comments = profile && profile.ratingsInfo
 
         return (
-            <UI.Panel id="profilePanel">
+            <UI.Panel id="profilePanel" className="noPaddingFromPanel">
                 <UI.Group title="Мой профиль">
                     <UI.List className="bottomPaddingGroup">
                         <UI.ListItem before={<UI.Avatar size={64} src={user.photo_200} />}
