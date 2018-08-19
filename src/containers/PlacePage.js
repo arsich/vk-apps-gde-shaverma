@@ -19,8 +19,7 @@ class PlacePage extends Component {
         this.state = {
             activePanel: 'loadingPanel',
             ratingDialog: null,
-            ratingValue: 5,
-            ratingComment: ''
+            ratingValue: 5
         }
     }
 
@@ -40,8 +39,7 @@ class PlacePage extends Component {
         } else {
             this.setState({
                 ratingDialog: null,
-                ratingValue: 5,
-                ratingComment: ''
+                ratingValue: 5
             })
         }
 

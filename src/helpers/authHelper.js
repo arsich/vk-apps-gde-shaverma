@@ -87,6 +87,10 @@ class AuthHelper {
         this.needToShowIntro = false
         storage.set(INTRO_SHOWN, true)
     }
+
+    setIntroShown() {
+        this.needToShowIntro = false
+    }
 }
 
 export default new AuthHelper()

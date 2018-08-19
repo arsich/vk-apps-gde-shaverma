@@ -91,3 +91,11 @@ export function shareVK(link) {
         }
     }}
 }
+
+export const REDIRECT_FROM_HASH_SUCCESS = 'redirect_from_hash_success'
+
+export function redirectFromHash() {
+    return {
+        type: REDIRECT_FROM_HASH_SUCCESS
+    }
+}

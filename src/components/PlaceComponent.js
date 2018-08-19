@@ -108,27 +108,6 @@ class PlaceComponent extends Component {
                         {place.site ? <UI.ListItem before={<Icon24Globe />}><UI.Link href={getUrl(place.site)} target="_blank">{place.site}</UI.Link></UI.ListItem> : null }
                     </UI.List>
                 </UI.Group>
-                {!place.rateByDeviceBanned ?
-                    <UI.Group title="Мой отзыв">
-                        <UI.Div>
-                            <UI.Entity
-                                photo={this.props.userAvatar}
-                                size={64}
-                                style={{paddingBottom: 12}}
-                                title={`${user.first_name} ${user.last_name}`}
-                                description={place.rateByDevice ? <div style={{marginTop: 5}}><div className='ratingLabel'>{getRatingString(place.rateByDevice)}</div>{getDateFromTimestamp(place.rateByDeviceDate)}</div> 
-                                : <div style={{fontWeight: 'normal', marginTop: 5}}>Вы еще не поставили оценку</div>}
-                                >
-                                {place.rateByDeviceText ? <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{place.rateByDeviceText}</div> : null}
-                                <UI.Button level="buy" 
-                                    style={{marginTop: 16}}
-                                    onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
-                                {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
-                            </UI.Entity>
-                        </UI.Div>
-                    </UI.Group>
-                    : null
-                }
                 <UI.Group title="Рейтинг">
                     <UI.List className="bottomPaddingGroup">
                         <UI.ListItem before={<UI.Avatar type="image" size={64} style={{backgroundColor: 'white'}} src={getIconForPlace(place)} />}
@@ -185,6 +164,27 @@ class PlaceComponent extends Component {
                     </UI.HorizontalScroll>
                 </UI.Group>
                 : null }
+                {!place.rateByDeviceBanned ?
+                    <UI.Group title="Мой отзыв">
+                        <UI.Div>
+                            <UI.Entity
+                                photo={this.props.userAvatar}
+                                size={64}
+                                style={{paddingBottom: 12}}
+                                title={`${user.first_name} ${user.last_name}`}
+                                description={place.rateByDevice ? <div style={{marginTop: 5}}><div className='ratingLabel'>{getRatingString(place.rateByDevice)}</div>{getDateFromTimestamp(place.rateByDeviceDate)}</div> 
+                                : <div style={{fontWeight: 'normal', marginTop: 5}}>Вы еще не поставили оценку</div>}
+                                >
+                                {place.rateByDeviceText ? <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{place.rateByDeviceText}</div> : null}
+                                <UI.Button level="buy" 
+                                    style={{marginTop: 16}}
+                                    onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
+                                {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
+                            </UI.Entity>
+                        </UI.Div>
+                    </UI.Group>
+                    : null
+                }
                 {hasComments ?
                     <UI.Group title="Последние отзывы" className="bottomPaddingGroup">
                         {place.comments.map(renderComment)}

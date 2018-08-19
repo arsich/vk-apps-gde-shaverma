@@ -20,7 +20,6 @@ class ProfileComponent extends Component {
         const regDate = profile && profile.userInfo.registrationDate
 
         const renderComment = (comment) => {
-            console.log(comment);
             return (
                 <UI.ListItem
                     multiline

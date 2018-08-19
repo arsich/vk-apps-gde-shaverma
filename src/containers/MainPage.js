@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import {getPlacesNearby} from '../actions/places'
-import {updateNavigation} from '../actions/vk'
+import {updateNavigation, redirectFromHash} from '../actions/vk'
 import {sendLastRequestedLocation} from '../actions/location'
 import * as UI from '@vkontakte/vkui';
 
@@ -35,11 +35,12 @@ class MainPage extends Component {
     }
 
     checkHash(props) {
-        if (props.hash) {
+        if (props.hash && !props.redirectedFromHash) {
             const id = props.hash.replace("#", "")
             if (!isNaN(id)) {
                 props.pushLocation(`/place/${id}`)
                 this.props.updateNavigation(true, false)
+                this.props.redirectFromHash()
             }
         }
     }
@@ -101,16 +102,19 @@ class MainPage extends Component {
 
 MainPage.propTypes = {
     places: PropTypes.array,
-    lastUserLocation: PropTypes.object
+    lastUserLocation: PropTypes.object,
+    hash: PropTypes.string,
+    redirectedFromHash: PropTypes.bool
 }
 
 const mapStateToProps = (state, ownProps) => {
     const places = state.places && state.places.listNearby ? state.places.listNearby : []
     const location = state.location ? state.location.lastRequestedLocation || state.location.lastUserLocation : null
-    const hash = ownProps.history.location.hash;
-    return {places, lastUserLocation: location, pushLocation: ownProps.history.push, hash}
+    const hash = ownProps.history.location.hash
+    const redirectedFromHash = state.vk.redirectedFromHash
+    return {places, lastUserLocation: location, pushLocation: ownProps.history.push, hash, redirectedFromHash}
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPlacesNearby, updateNavigation, sendLastRequestedLocation
+    getPlacesNearby, updateNavigation, sendLastRequestedLocation, redirectFromHash
 })(MainPage))

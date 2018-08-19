@@ -37,3 +37,7 @@
 .listItemNoPadding .ListItem__main {
     padding: 0 !important;
 }
+
+.Slider__dragger::before {
+    left: 0;
+}

@@ -10,6 +10,7 @@ import {hideIntro} from '../actions/auth'
 import introOne from '../assets/intro_one.jpg'
 import introTwo from '../assets/intro_two.jpg'
 import introThree from '../assets/intro_three.jpg'
+import authHelper from '../helpers/authHelper'
 
 
 import {isWebView} from '@vkontakte/vkui/src/lib/webview'
@@ -20,11 +21,15 @@ const introTextStyle={paddingBottom: 36, lineHeight: 1.5}
 
 class LoadingPage extends Component {
     render() {
-        if (this.props.hasAuth && this.props.hasLocation && this.props.introShown) {
+        const redirectedFromHash = Boolean(this.props.location.state.from.hash)
+        if (this.props.hasAuth && this.props.hasLocation && (this.props.introShown || redirectedFromHash)) {
+            if (redirectedFromHash) {
+                authHelper.setIntroShown()
+            }
             const { from } = this.props.location.state || {from: {pathname: "/"}};
             return <Redirect to={from}/>
         }
-        const activePanel = !this.props.introShown ? "introPanel" : "loadingPanel"
+        const activePanel = !this.props.introShown && !redirectedFromHash ? "introPanel" : "loadingPanel"
         return (
             <UI.ConfigProvider insets={this.props.insets} isWebView={isWebView}>
                 <UI.Root activeView="mainView">
