@@ -7,10 +7,10 @@ import Icon24Recent from '@vkontakte/icons/dist/24/recent';
 import Icon24MoneyCircle from '@vkontakte/icons/dist/24/money_circle';
 import Icon24Phone from '@vkontakte/icons/dist/24/phone';
 import Icon24Globe from '@vkontakte/icons/dist/24/globe';
-import Icon24Share from '@vkontakte/icons/dist/24/share_external';
-import Icon16Dropdown from '@vkontakte/icons/dist/16/dropdown';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
+import Icon24Info from '@vkontakte/icons/dist/24/info';
+import Icon24Share from '@vkontakte/icons/dist/24/share';
 
 import './PlaceComponent.css'
 
@@ -46,19 +46,9 @@ const specialsAvatarStyle = {
 }
 
 class PlaceComponent extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            contextOpened: false
-        }
-    }
-
-    toggleContext = () => {
-        this.setState({ contextOpened: !this.state.contextOpened })
-    }
-
     render() {
         const place = this.props.place || {}
+        const hasUserInfo = Boolean(this.props.user);
         const user = this.props.user || {}
 
         const renderComment = (comment) => {
@@ -83,29 +73,22 @@ class PlaceComponent extends Component {
             <UI.Panel id={this.props.id}>
                 <UI.PanelHeader
                     left={<UI.HeaderButton onClick={this.props.goBack}>{UI.platform() === UI.IOS ? <Icon28ChevronBack /> : <Icon24Back />}</UI.HeaderButton>}
-                >
-                    <UI.PanelHeaderContent aside={<Icon16Dropdown />} onClick={this.toggleContext}>
-                    {place.name}
-                    </UI.PanelHeaderContent>
-                </UI.PanelHeader>
-                <UI.HeaderContext opened={this.state.contextOpened} onClose={this.toggleContext}>
-                    <UI.List>
-                    <UI.ListItem
-                        before={<Icon24Share />}
-                        onClick={this.props.shareVK}>
-                        Поделиться
-                    </UI.ListItem>
-                    </UI.List>
-                </UI.HeaderContext>
+                >{place.name}</UI.PanelHeader>
                 <img src={getImageForPlace(place)} className="imageBig" alt={place.name} />
-                <UI.Group title="Инфо">
-                    <UI.Div style={{lineHeight: 1.5}}>{place.description}</UI.Div>
+                <UI.Group>
+                    <UI.Header>{place.name}</UI.Header>
                     <UI.List className="bottomPaddingGroup">
-                        <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
+                        <UI.ListItem before={<Icon24Info />} multiline>{place.description}</UI.ListItem>
                         {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
                         {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
-                        {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}>{place.phoneNumber}</UI.ListItem> : null }
+                        {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}><UI.Link href={'tel:' + place.phoneNumber} target="_blank">{place.phoneNumber}</UI.Link></UI.ListItem> : null }
                         {place.site ? <UI.ListItem before={<Icon24Globe />}><UI.Link href={getUrl(place.site)} target="_blank">{place.site}</UI.Link></UI.ListItem> : null }
+                        <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
+                    </UI.List>
+                </UI.Group>
+                <UI.Group>
+                    <UI.List style={{paddingTop: 8, paddingBottom: 8}} >
+                        <UI.ListItem before={<Icon24Share fill={UI.colors.accentBlue}/>} onClick={this.props.shareVK}><div style={{color: UI.colors.accentBlue}}>Поделиться</div></UI.ListItem>
                     </UI.List>
                 </UI.Group>
                 <UI.Group title="Рейтинг">
@@ -164,7 +147,7 @@ class PlaceComponent extends Component {
                     </UI.HorizontalScroll>
                 </UI.Group>
                 : null }
-                {!place.rateByDeviceBanned ?
+                {!place.rateByDeviceBanned && hasUserInfo ?
                     <UI.Group title="Мой отзыв">
                         <UI.Div>
                             <UI.Entity

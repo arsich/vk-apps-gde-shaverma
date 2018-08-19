@@ -21,7 +21,7 @@ const introTextStyle={paddingBottom: 36, lineHeight: 1.5}
 
 class LoadingPage extends Component {
     render() {
-        const redirectedFromHash = Boolean(this.props.location.state.from.hash)
+        const redirectedFromHash = Boolean(this.props.location.state && this.props.location.state.from.hash)
         if (this.props.hasAuth && this.props.hasLocation && (this.props.introShown || redirectedFromHash)) {
             if (redirectedFromHash) {
                 authHelper.setIntroShown()
@@ -38,7 +38,7 @@ class LoadingPage extends Component {
                             <UI.ScreenSpinner />
                         </UI.Panel>
                         <UI.Panel id="introPanel">
-                            <UI.Div style={{backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: '80px'}} 
+                            <div style={{backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: '80px'}} 
                                 className="fullHeight">
                                 <UI.Gallery bullets="dark" 
                                     style={{height: 'auto', textAlign: 'center'}}>
@@ -55,7 +55,7 @@ class LoadingPage extends Component {
                                         <p style={introTextStyle}>Смотри рейтинг, часы работы,<br/> цены и акции в заведениях</p>
                                     </div>
                                 </UI.Gallery>
-                            </UI.Div>
+                            </div>
                             <UI.FixedLayout vertical="bottom">
                                 <UI.Div style={{display: 'flex'}}>
                                     <UI.Button level="buy" size="xl" style={{height: 52}} onClick={this.props.hideIntro}>Найти шаверму</UI.Button>

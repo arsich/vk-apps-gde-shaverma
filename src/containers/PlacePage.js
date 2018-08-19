@@ -36,11 +36,6 @@ class PlacePage extends Component {
                 ratingValue: nextProps.place.rateByDevice,
                 ratingComment: nextProps.place.rateByDeviceText
             })
-        } else {
-            this.setState({
-                ratingDialog: null,
-                ratingValue: 5
-            })
         }
 
         if (nextProps.ratingUpdated && !this.props.ratingUpdated) {

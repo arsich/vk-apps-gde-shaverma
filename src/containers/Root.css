@@ -41,3 +41,11 @@
 .Slider__dragger::before {
     left: 0;
 }
+
+.PanelHeader--android .PanelHeader__content {
+    padding-right: 90px;
+}
+
+.PanelHeader--ios .PanelHeader__content {
+    max-width: 250px;
+}
