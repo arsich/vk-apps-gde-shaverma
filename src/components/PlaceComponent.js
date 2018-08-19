@@ -11,6 +11,7 @@ import Icon24Back from '@vkontakte/icons/dist/24/back';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Info from '@vkontakte/icons/dist/24/info';
 import Icon24Share from '@vkontakte/icons/dist/24/share';
+import Icon24Place from '@vkontakte/icons/dist/24/place';
 
 import './PlaceComponent.css'
 
@@ -79,6 +80,7 @@ class PlaceComponent extends Component {
                     <UI.Header>{place.name}</UI.Header>
                     <UI.List className="bottomPaddingGroup">
                         <UI.ListItem before={<Icon24Info />} multiline>{place.description}</UI.ListItem>
+                        <UI.ListItem before={<Icon24Place />} multiline onClick={this.props.openPlaceLocation}><UI.Link>Открыть на карте</UI.Link></UI.ListItem>
                         {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
                         {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
                         {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}><UI.Link href={'tel:' + place.phoneNumber} target="_blank">{place.phoneNumber}</UI.Link></UI.ListItem> : null }
@@ -193,6 +195,7 @@ PlaceComponent.propTypes = {
     user: PropTypes.object,
     userAvatar: PropTypes.string,
     openRatingDialog: PropTypes.func,
+    openPlaceLocation: PropTypes.func,
     shareVK: PropTypes.func,
     goBack: PropTypes.func,
     deleteRating: PropTypes.func

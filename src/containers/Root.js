@@ -5,6 +5,7 @@ import { Route, Redirect } from 'react-router-dom'
 import MainPage from './MainPage'
 import PlacePage from './PlacePage'
 import LoadingPage from './LoadingPage'
+import PlaceLocationPage from './PlaceLocationPage'
 import authHelper from '../helpers/authHelper'
 import locationHelper from '../helpers/locationHelper'
 import './Root.css'
@@ -16,6 +17,7 @@ const Root = ({ store }) => (
         <div>
             <PrivateRoute exact path="/" component={MainPage} data={store.getState()} />
             <PrivateRoute path="/place/:placeId" component={PlacePage} data={store.getState()} />
+            <PrivateRoute path="/place-location/:placeId" component={PlaceLocationPage} data={store.getState()} />
             <Route path="/loading" component={LoadingPage} />
         </div>
     </Provider>

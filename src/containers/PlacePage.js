@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import * as UI from '@vkontakte/vkui';
+import * as UI from '@vkontakte/vkui'
 
 import {getPlaceInfo, addRating, deleteRating} from '../actions/places'
 import {updateNavigation, setLocationForVK, shareVK, goBack} from '../actions/vk'
@@ -80,6 +80,10 @@ class PlacePage extends Component {
         deleteRating(placeId)
     }
 
+    openPlaceLocation = () => {
+        this.props.pushLocation(`/place-location/${this.props.placeId}`)
+    }
+
     render() {
         const {place, userAvatar, user} = this.props;
         return (
@@ -90,6 +94,7 @@ class PlacePage extends Component {
                                         user={user}
                                         id="mainPanel"
                                         openRatingDialog={this.openRatingDialog}
+                                        openPlaceLocation={this.openPlaceLocation}
                                         deleteRating={this.deleteRating}
                                         goBack={this.goBack}
                                         shareVK={this.shareVK}
@@ -133,7 +138,8 @@ const mapStateToProps = (state, ownProps) => {
         user: state.auth.vkInfo,
         userAvatar: state.auth && state.auth.vkInfo && state.auth.vkInfo.photo_200,
         ratingUpdated: state.places && state.places.ratingUpdated,
-        insets: state.vk.insets
+        insets: state.vk.insets,
+        pushLocation: ownProps.history.push
     }
 }
 
