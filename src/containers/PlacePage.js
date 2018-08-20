@@ -18,14 +18,14 @@ class PlacePage extends Component {
 
         this.state = {
             activePanel: 'loadingPanel',
-            ratingDialog: null,
+            ratingDialog: <UI.ScreenSpinner/>,
             ratingValue: 5
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.placeLoading && !nextProps.placeLoading) {
-            this.setState({activePanel: 'mainPanel'})
+            this.setState({ratingDialog: null, activePanel: "mainPanel"})
         }
         if (!this.props.needBack && nextProps.needBack) {
             this.props.updateNavigation(false, false)
@@ -100,7 +100,7 @@ class PlacePage extends Component {
                                         shareVK={this.shareVK}
                                         userAvatar={userAvatar}/>
                         <UI.Panel id="loadingPanel">
-                            <UI.ScreenSpinner />
+                            <UI.PanelHeader/>
                         </UI.Panel>
                     </UI.View>
                 </UI.Root>
@@ -172,7 +172,7 @@ class RatingDialog extends Component {
                     action: ()=> {
                         this.props.handleSave()
                     },
-                    style: 'destructive'
+                    style: 'default'
                 }]}
                 onClose={ () => this.props.handleClose() }
             >

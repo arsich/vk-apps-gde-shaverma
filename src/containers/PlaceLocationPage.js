@@ -4,7 +4,7 @@ import { YMaps, Map, Placemark } from 'react-yandex-maps'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import {getIconForPlace, getRatingForPlace} from '../helpers/placeUtils'
+import {getIconForPlace} from '../helpers/placeUtils'
 
 import Icon24Back from '@vkontakte/icons/dist/24/back'
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back'
@@ -22,7 +22,8 @@ class PlaceLocationPage extends Component {
         const location = props.location
         this.state = {
             map: { center: [location.lat, location.lng], zoom: 15, controls: [] },
-            zoom: 15
+            zoom: 15,
+            mapHeight: this.getMapHeight()
         }
     }
 
@@ -31,6 +32,26 @@ class PlaceLocationPage extends Component {
             this.props.updateNavigation(false, false)
             this.props.goBack()
         }
+    }
+
+    componentDidMount () {
+        window.addEventListener('resize', this.onResize);
+        this.onResize();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize)
+    }
+
+    onResize = () => {
+        this.setState({mapHeight: this.getMapHeight()})
+    }
+
+    getMapHeight() {
+        const browserHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight
+        // toolbar and tabs
+        const mapTop = UI.platform() === UI.IOS ? 64 : 56
+        return browserHeight - mapTop
     }
 
     render() {
@@ -63,18 +84,18 @@ class PlaceLocationPage extends Component {
                               }}
                     />
         }
-        const {map} = this.state;
+        const {map, mapHeight} = this.state;
         return (
             <UI.View activePanel="location_content" id="viewLocation">
                 <UI.Panel id="location_content">
                     <UI.PanelHeader
                         left={<UI.HeaderButton onClick={this.props.goBackVK}>{UI.platform() === UI.IOS ? <Icon28ChevronBack /> : <Icon24Back />}</UI.HeaderButton>}
                         >{this.props.place.name}</UI.PanelHeader>
-                    <YMaps  width="100%" height="100vh">
-                        <Map state={map} width="100%" height="100vh">
+                    <YMaps  width="100%" height={mapHeight}>
+                        <Map state={map} width="100%" height={mapHeight}>
                             {renderPlaceMark(this.props.place)}
                         </Map>
-                    </YMaps>;
+                    </YMaps>
                 </UI.Panel>
             </UI.View>
         )

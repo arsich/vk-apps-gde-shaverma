@@ -6,15 +6,40 @@ import {getIconForPlace, getRatingForPlace} from '../helpers/placeUtils'
 
 import './MapComponent.css'
 
+import * as UI from '@vkontakte/vkui';
+
 class MapComponent extends Component {
     constructor(props) {
         super(props);
 
         const location = props.location
+
+
         this.state = {
             map: { center: [location.lat, location.lng], zoom: 15, controls: [] },
-            zoom: 15
+            zoom: 15,
+            mapHeight: this.getMapHeight()
         }
+    }
+
+    componentDidMount () {
+        window.addEventListener('resize', this.onResize);
+        this.onResize();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize)
+    }
+
+    onResize = () => {
+        this.setState({mapHeight: this.getMapHeight()})
+    }
+
+    getMapHeight() {
+        const browserHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight
+        // toolbar and tabs
+        const mapTop = UI.platform() === UI.IOS ? 112 : 104
+        return browserHeight - mapTop
     }
 
     handleLocationChanged = (event) => {
@@ -77,14 +102,14 @@ class MapComponent extends Component {
                               onClick={this.handlePlacemarkClicked.bind(this, place)}
                     />
         }
-        const {map} = this.state;
-        return <YMaps  width="100%" height="100vh">
-                <Map state={map} width="100%" height="100vh"
+        const {map, mapHeight} = this.state;
+        return (<YMaps  width="100%" height={mapHeight}>
+                <Map state={map} width="100%" height={mapHeight}
                     onBoundsChange={this.handleBoundsChange}
                     onActionEnd={this.handleLocationChanged}>
                     {this.props.places.map(renderPlaceMark)}
                 </Map>
-            </YMaps>;
+            </YMaps>)
     }
 }
 
