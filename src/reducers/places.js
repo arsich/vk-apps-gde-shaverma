@@ -1,6 +1,7 @@
 import {GET_NEARBY, GET_NEARBY_SUCCESS, GET_NEARBY_FAIL,
     GET_INFO, GET_INFO_FAIL, GET_INFO_SUCCESS, 
-    ADD_RATING, ADD_RATING_SUCCESS, DELETE_RATING, DELETE_RATING_SUCCESS} from '../actions/places'
+    ADD_RATING, ADD_RATING_SUCCESS, DELETE_RATING, DELETE_RATING_SUCCESS,
+    GET_TOP_SUCCESS} from '../actions/places'
 
 export default function placesReducer(state = {}, action = {}) {
     switch (action.type) {
@@ -49,6 +50,11 @@ export default function placesReducer(state = {}, action = {}) {
             return {
                 ...state,
                 ratingUpdated: true
+            };
+        case GET_TOP_SUCCESS:
+            return {
+                ...state,
+                topList: action.result.result
             };
         default:
             return state;

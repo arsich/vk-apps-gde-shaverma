@@ -60,3 +60,18 @@ export function deleteRating(placeId) {
         }
     }}
 }
+
+export const GET_TOP = 'places/GET_TOP';
+export const GET_TOP_SUCCESS = 'places/GET_TOP_SUCCESS';
+export const GET_TOP_FAIL = 'places/GET_TOP_FAIL';
+
+export function getTop(lat, lng) {
+    return {[CALL_API]: {
+        types: [GET_TOP, GET_TOP_SUCCESS, GET_TOP_FAIL],
+        endpoint: 'Places/getTop',
+        query: {
+            lat,
+            lng
+        }
+    }}
+}

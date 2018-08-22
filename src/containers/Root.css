@@ -49,3 +49,7 @@
 .PanelHeader--ios .PanelHeader__content {
     max-width: 235px;
 }
+.promoLabel {
+    font-size: 14px;
+    color: #aaaeb3;
+}

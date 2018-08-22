@@ -11,8 +11,10 @@ import * as UI from '@vkontakte/vkui';
 import MapComponent from '../components/MapComponent'
 
 import ProfilePage from './ProfilePage'
+import TopPage from './TopPage'
 
 const MAP = 'map'
+const TOP = 'top'
 const PROFILE = 'profile'
 
 let lastActiveTap = MAP
@@ -59,6 +61,7 @@ class MainPage extends Component {
         const {places, lastUserLocation} = this.props;
         const isMap = this.state.activeTab === MAP
         const isProfile = this.state.activeTab === PROFILE
+        const isTop = this.state.activeTab === TOP
         return (
             <UI.Root activeView="view1">
             <UI.View activePanel="panel_content" id="view1">
@@ -73,6 +76,15 @@ class MainPage extends Component {
                             selected={isMap}
                         >
                             Карта
+                        </UI.TabsItem>
+                        <UI.TabsItem
+                            onClick={() => {
+                                lastActiveTap = TOP
+                                this.setState({ activeTab: TOP })}
+                            }
+                            selected={isTop}
+                        >
+                            Подборка
                         </UI.TabsItem>
                         <UI.TabsItem
                             onClick={() => {
@@ -93,6 +105,9 @@ class MainPage extends Component {
                     {isProfile ?
                         <ProfilePage handleShowPlace={this.handleShowPlace}/>
                         : null}
+                    {isTop ?
+                        <TopPage handleShowPlace={this.handleShowPlace} lastUserLocation={lastUserLocation}/>
+                    : null}
                 </UI.Panel>
             </UI.View>
             </UI.Root>
