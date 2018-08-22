@@ -33,12 +33,14 @@ class LoadingPage extends Component {
         return (
             <UI.ConfigProvider insets={this.props.insets} isWebView={isWebView}>
                 <UI.Root activeView="mainView">
-                    <UI.View id="mainView" activePanel={activePanel} header={false}>
+                    <UI.View id="mainView" activePanel={activePanel}>
                         <UI.Panel id="loadingPanel">
                             <UI.ScreenSpinner />
                         </UI.Panel>
                         <UI.Panel id="introPanel">
-                            <div style={{backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: '80px'}} 
+                            <UI.PanelHeader noShadow>Где Шаверма</UI.PanelHeader>
+                            <div style={{backgroundColor: '#ffffff', display: 'flex', alignItems: 'center', 
+                                justifyContent: 'center', paddingBottom: '80px', paddingTop: '60px'}} 
                                 className="fullHeight">
                                 <UI.Gallery bullets="dark" 
                                     style={{height: 'auto', textAlign: 'center'}}>
