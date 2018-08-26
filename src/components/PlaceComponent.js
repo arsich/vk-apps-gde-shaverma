@@ -70,6 +70,9 @@ class PlaceComponent extends Component {
         const hasComments = place.comments && place.comments.length > 0
         const hasSpecials = place.supplierId > 0 || place.hasVisa || place.hasFalafel || place.hasBeer || place.hasWC || place.hasOnCoal || place.hasHygiene
 
+        const isIos = UI.platform() === UI.IOS
+        const appLink = isIos ? 'https://itunes.apple.com/ru/app/gde-saverma-poisk-saurmy-v/id1141097185' : 'https://play.google.com/store/apps/details?id=ru.gdeshaverma.android'
+
         return (
             <UI.Panel id={this.props.id}>
                 <UI.PanelHeader
@@ -173,6 +176,7 @@ class PlaceComponent extends Component {
                 {hasComments ?
                     <UI.Group title="Последние отзывы" className="bottomPaddingGroup">
                         {place.comments.map(renderComment)}
+                        {place.commentsCount > 3 ? <UI.Div><UI.Button level="sell" size="xl" component="a" href={appLink} target="_blank">Больше отзывов в приложении</UI.Button></UI.Div> : null}
                     </UI.Group>
                 : null}
                 {place.lastDiscount ?
