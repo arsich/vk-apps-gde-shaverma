@@ -63,6 +63,13 @@ class PlaceComponent extends Component {
                                     {getDateFromTimestamp(comment.date)}
                                 </div>}>
                         <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{comment.text}</div>
+                        {comment.answer ? 
+                            <div style={{lineHeight: 1.5, fontSize: 14, marginTop: 8, padding: 12, minWidth: 200, backgroundColor: UI.colors.backgroundBlue}}>
+                                <div style={{float: 'right', color: UI.colors.captionGray}}>{getDateFromTimestamp(comment.answerDate)}</div>
+                                <div style={{fontWeight: 'bold'}}>Ответ заведения</div>
+                                <div style={{marginTop: 8}}>{comment.answer}</div>
+                            </div>
+                        : null}
                     </UI.Entity>
                 </UI.Div>)
         }

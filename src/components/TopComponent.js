@@ -13,7 +13,7 @@ class TopComponent extends Component {
     render() {
         const {places} = this.props
         const renderPlace = (place) => {
-            const hasAds = place.status == "promoted"
+            const hasAds = place.status === "promoted"
             return (
                 <UI.ListItem
                     key={"place_top_" + place.id}
