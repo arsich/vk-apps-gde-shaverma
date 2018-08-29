@@ -52,6 +52,17 @@ class PlaceComponent extends Component {
         const hasUserInfo = Boolean(this.props.user);
         const user = this.props.user || {}
 
+        const renderReview = (review) => {
+            const url = review.reviewer.name === "emshavermu" ? "https://vk.com/emshavermu" : review.url;
+            return (
+                <div key={"review_" + review.id}>
+                    <UI.ListItem before={<UI.Avatar size={36} src={getImageUrl(review.reviewer.picture)} />}
+                        onClick={() => {window.open(url, "_self")}}
+                        description={getDateFromTimestamp(review.date)}><UI.Link>{review.reviewer.name}</UI.Link></UI.ListItem>
+                    <UI.Div style={{lineHeight: 1.5, fontSize: 14, marginTop: -16}}>{review.text}</UI.Div>
+                </div>)
+        }
+
         const renderComment = (comment) => {
             return (
                 <UI.Div key={"comment_" + comment.id}>
@@ -75,6 +86,7 @@ class PlaceComponent extends Component {
         }
 
         const hasComments = place.comments && place.comments.length > 0
+        const hasReviews = place.reviews && place.reviews.length > 0
         const hasSpecials = place.supplierId > 0 || place.hasVisa || place.hasFalafel || place.hasBeer || place.hasWC || place.hasOnCoal || place.hasHygiene
 
         const isIos = UI.platform() === UI.IOS
@@ -159,6 +171,11 @@ class PlaceComponent extends Component {
                     </UI.HorizontalScroll>
                 </UI.Group>
                 : null }
+                {hasReviews ?
+                    <UI.Group className="bottomPaddingGroup">
+                        {place.reviews.map(renderReview)}
+                    </UI.Group>
+                : null}
                 {!place.rateByDeviceBanned && hasUserInfo ?
                     <UI.Group title="Мой отзыв">
                         <UI.Div>
