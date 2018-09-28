@@ -61,7 +61,7 @@ export function getDateFromTimestamp(timestamp) {
 }
 
 export function getImageUrl(url) {
-    if (url.indexOf("http") >= 0) {
+    if (url && url.indexOf("http") >= 0) {
         return url
     } else {
         return `https://gdeshaverma.ru${url || '/api/v1/containers/images/download/default.png'}`
