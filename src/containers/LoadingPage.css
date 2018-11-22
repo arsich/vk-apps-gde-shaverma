@@ -1,6 +1,12 @@
 .intro_image {
     width: 100%;
     height: auto;
+    max-width: 300px;
+}
+@media screen {
+    .intro_image {
+        max-width: 230px;
+    }  
 }
 
 .Gallery__bullets--dark .Gallery__bullet {
