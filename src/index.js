@@ -11,6 +11,9 @@ import locationHelper from './helpers/locationHelper'
 
 import registerServiceWorker from './registerServiceWorker'
 
+import 'core-js/es6/map'
+import 'core-js/es6/set'
+
 const store = configureStore()
 authHelper.init(store)
 locationHelper.init(store)

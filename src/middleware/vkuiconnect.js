@@ -6,6 +6,7 @@ import {VK_NEED_GO_BACK_EVENT, VK_WENT_BACK_EVENT,
 import {sendVKInfo, sendVKInfoFailed} from '../actions/auth'
 
 import locationHelper from '../helpers/locationHelper'
+import {notInVK} from '../helpers/common'
 
 export const CALL_VKUI_CONNECT = 'call_vkui_connect'
 
@@ -20,7 +21,7 @@ export default store => next => action => {
         connect.send(action[CALL_VKUI_CONNECT].type, action[CALL_VKUI_CONNECT].data || {})
     }
 
-    if (action[CALL_VKUI_CONNECT].type === GET_GEODATA_EVENT && !connect.supports(GET_GEODATA_EVENT)) {
+    if (action[CALL_VKUI_CONNECT].type === GET_GEODATA_EVENT && notInVK()) {
         locationHelper.setNoLocationFromVK()
     }
 
@@ -30,7 +31,7 @@ export default store => next => action => {
         next({type: VK_WENT_BACK_EVENT})
     }
 
-    if (action[CALL_VKUI_CONNECT].type === GET_USER_INFO_EVENT && !connect.supports(GET_USER_INFO_EVENT)) {
+    if (action[CALL_VKUI_CONNECT].type === GET_USER_INFO_EVENT && notInVK()) {
         next(sendVKInfoFailed());
     }
 
