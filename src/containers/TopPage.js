@@ -13,10 +13,16 @@ class TopPage extends Component {
             getTop(lastUserLocation.lat, lastUserLocation.lng)
         }
     }
+    refresh = () => {
+        const {getTop, lastUserLocation} = this.props
+        getTop(lastUserLocation.lat, lastUserLocation.lng)
+    }
     render() {
-        const {handleShowPlace, places} = this.props
+        const {handleShowPlace, places, topLoading} = this.props
         return (
-            <TopComponent places={places} 
+            <TopComponent places={places}
+                topLoading={topLoading}
+                handleRefresh={this.refresh}
                 handleShowPlace={handleShowPlace} />
         )
     }
@@ -24,12 +30,13 @@ class TopPage extends Component {
 
 TopPage.propTypes = {
     places: PropTypes.array,
+    topLoading: PropTypes.bool,
     lastUserLocation: PropTypes.object,
     handleShowPlace: PropTypes.func
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return {places: state.places.topList}
+    return {places: state.places.topList, topLoading: state.places.topLoading}
 }
 
 export default withRouter(connect(mapStateToProps, {

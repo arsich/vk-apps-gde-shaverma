@@ -24,7 +24,8 @@ class MapComponent extends Component {
 
     componentDidMount () {
         window.addEventListener('resize', this.onResize);
-        this.onResize();
+        // fix ios insets
+        setTimeout(this.onResize, 50);
     }
 
     componentWillUnmount() {
@@ -37,9 +38,9 @@ class MapComponent extends Component {
 
     getMapHeight() {
         const browserHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight
-        // toolbar and tabs
-        const mapTop = UI.platform() === UI.IOS ? 112 : 104
-        return browserHeight - mapTop
+        // tabbar height
+        const mapBottom = UI.platform() === UI.IOS ? 92 : 104
+        return browserHeight - mapBottom
     }
 
     handleLocationChanged = (event) => {

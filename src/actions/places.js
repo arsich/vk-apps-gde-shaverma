@@ -28,7 +28,7 @@ export function getPlaceInfo(placeId) {
             placeId,
             limitComments: true
         }
-    }}
+    }, placeId}
 }
 
 export const ADD_RATING = 'places/ADD_RATING'
@@ -72,6 +72,37 @@ export function getTop(lat, lng) {
         query: {
             lat,
             lng
+        }
+    }}
+}
+
+export const GET_COMMENTS_FOR_PLACE = 'places/GET_COMMENTS';
+export const GET_COMMENTS_FOR_PLACE_SUCCESS = 'places/GET_COMMENTS_SUCCESS';
+export const GET_COMMENTS_FOR_PLACE_FAIL = 'places/GET_COMMENTS_FAIL';
+
+export function getCommentsForPlace(placeId, pageNumber, before) {
+    return {[CALL_API]: {
+        types: [GET_COMMENTS_FOR_PLACE, GET_COMMENTS_FOR_PLACE_SUCCESS, GET_COMMENTS_FOR_PLACE_FAIL],
+        endpoint: 'Rates/getForPlace',
+        query: {
+            placeId,
+            pageNumber,
+            before
+        }
+    }, placeId}
+}
+
+export const GET_LAST_COMMENTS = 'comments/GET_LATEST';
+export const GET_LAST_COMMENTS_SUCCESS = 'comments/GET_LATEST_SUCCESS';
+export const GET_LAST_COMMENTS_FAIL = 'comments/GET_LATEST_FAIL';
+
+export function getLastComments(pageNumber, before) {
+    return {[CALL_API]: {
+        types: [GET_LAST_COMMENTS, GET_LAST_COMMENTS_SUCCESS, GET_LAST_COMMENTS_FAIL],
+        endpoint: 'Rates/getLatest',
+        query: {
+            pageNumber,
+            before
         }
     }}
 }

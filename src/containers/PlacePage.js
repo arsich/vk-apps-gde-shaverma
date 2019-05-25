@@ -4,12 +4,14 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import * as UI from '@vkontakte/vkui'
 
-import {getPlaceInfo, addRating, deleteRating} from '../actions/places'
+import {getPlaceInfo, addRating, deleteRating, getCommentsForPlace} from '../actions/places'
 import {updateNavigation, setLocationForVK, shareVK, goBack} from '../actions/vk'
 
 import PlaceComponent from '../components/PlaceComponent'
 
 import {isWebView} from '@vkontakte/vkui/src/lib/webview'
+
+import uiHelper from '../helpers/uiHelper'
 
 class PlacePage extends Component {
 
@@ -48,6 +50,8 @@ class PlacePage extends Component {
         const {getPlaceInfo, placeId, setLocationForVK} = this.props
         getPlaceInfo(placeId)
         setLocationForVK(placeId)
+
+        uiHelper.setTheme()
     }
 
     shareVK = () => {
@@ -84,17 +88,25 @@ class PlacePage extends Component {
         this.props.pushLocation(`/place-location/${this.props.placeId}`)
     }
 
+    getCommentsForPlace = (pageNumber, before) => {
+        this.props.getCommentsForPlace(this.props.place.id, pageNumber, before)
+    }
+
     render() {
-        const {place, userAvatar, user} = this.props;
+        const {place, userAvatar, user, noMoreComments, commentsLoading, placeComments} = this.props;
         return (
             <UI.ConfigProvider insets={this.props.insets} isWebView={isWebView}>
                 <UI.Root activeView="mainView">
                     <UI.View id="mainView" activePanel={this.state.activePanel} popout={this.state.ratingDialog}>
                         <PlaceComponent place={place}
+                                        placeComments={placeComments}
+                                        commentsLoading={commentsLoading}
+                                        noMoreComments={noMoreComments}
                                         user={user}
                                         id="mainPanel"
                                         openRatingDialog={this.openRatingDialog}
                                         openPlaceLocation={this.openPlaceLocation}
+                                        getCommentsForPlace={this.getCommentsForPlace}
                                         deleteRating={this.deleteRating}
                                         goBack={this.goBack}
                                         shareVK={this.shareVK}
@@ -111,9 +123,12 @@ class PlacePage extends Component {
 
 PlacePage.propTypes = {
     place: PropTypes.object,
+    placeComments: PropTypes.array,
     user: PropTypes.object,
     insets: PropTypes.object,
     placeLoading: PropTypes.bool,
+    commentsLoading: PropTypes.bool,
+    noMoreComments: PropTypes.bool,
     needBack: PropTypes.bool,
     ratingUpdated: PropTypes.bool,
     userAvatar: PropTypes.string,
@@ -122,6 +137,7 @@ PlacePage.propTypes = {
     updateNavigation: PropTypes.func.isRequired,
     addRating: PropTypes.func.isRequired,
     deleteRating: PropTypes.func.isRequired,
+    getCommentsForPlace: PropTypes.func.isRequired,
     shareVK: PropTypes.func.isRequired,
     goBackVK: PropTypes.func.isRequired,
     setLocationForVK: PropTypes.func.isRequired,
@@ -129,9 +145,15 @@ PlacePage.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    const placeInfo = state.places && state.places.placeInfo;
+    const placeComments = placeInfo ? state.places.placesComments[placeInfo.id] : [];
+    const noMoreComments = placeInfo ? state.places.placesWithAllComments.includes(placeInfo.id):  false;
     return {
-        place: state.places && state.places.placeInfo,
+        place: placeInfo,
         placeLoading: state.places && state.places.placeInfoLoading,
+        placeComments: placeComments,
+        noMoreComments: noMoreComments,
+        commentsLoading: state.places && state.places.commentsLoading,
         placeId: ownProps.match.params.placeId,
         needBack: state.vk && state.vk.needBack,
         goBack: ownProps.history.goBack,
@@ -203,5 +225,5 @@ class RatingDialog extends Component {
 
 export default withRouter(connect(mapStateToProps, {
     getPlaceInfo, updateNavigation, addRating, deleteRating, 
-    setLocationForVK, shareVK, goBackVK: goBack
+    setLocationForVK, shareVK, goBackVK: goBack, getCommentsForPlace
 })(PlacePage))

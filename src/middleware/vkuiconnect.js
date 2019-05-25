@@ -6,6 +6,7 @@ import {VK_NEED_GO_BACK_EVENT, VK_WENT_BACK_EVENT,
 import {sendVKInfo, sendVKInfoFailed} from '../actions/auth'
 
 import locationHelper from '../helpers/locationHelper'
+import uiHelper from '../helpers/uiHelper'
 import {notInVK} from '../helpers/common'
 
 export const CALL_VKUI_CONNECT = 'call_vkui_connect'
@@ -64,6 +65,9 @@ export default store => next => action => {
                     return
                 case 'VKWebAppUpdateInsets':
                     next(updateInsets(event.data.insets));
+                    return
+                case 'VKWebAppUpdateConfig':
+                    uiHelper.setTheme(e.detail.data.scheme ? e.detail.data.scheme : 'client_light');
                     return
                 default:
                     return

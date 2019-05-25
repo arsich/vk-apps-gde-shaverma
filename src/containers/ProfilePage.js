@@ -13,12 +13,16 @@ class ProfilePage extends Component {
             this.props.requestProfileInfo(this.props.userId)
         }
     }
+    refresh = () => {
+        this.props.requestProfileInfo(this.props.userId)
+    }
     render() {
         const {user, profile, handleShowPlace, profileLoading} = this.props
         return (
             <ProfileComponent user={user}
                               profile={profile}
                               profileLoading={profileLoading}
+                              handleRefresh={this.refresh}
                               handleShowPlace={handleShowPlace} />
         )
     }

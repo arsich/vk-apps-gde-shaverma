@@ -13,20 +13,27 @@ import MapComponent from '../components/MapComponent'
 import ProfilePage from './ProfilePage'
 import TopPage from './TopPage'
 
+
+import Icon24Map from '@vkontakte/icons/dist/24/globe';
+import Icon24List from '@vkontakte/icons/dist/24/list';
+import Icon24Profile from '@vkontakte/icons/dist/24/user_outline';
+
 const MAP = 'map'
 const TOP = 'top'
 const PROFILE = 'profile'
 
-let lastActiveTap = MAP
+let lastActiveTab = MAP
 
 class MainPage extends Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            activeTab: lastActiveTap
+            activeStory: lastActiveTab
         };
         this.checkHash(props);
+
+        this.onStoryChange = this.onStoryChange.bind(this);
     }
 
     componentDidMount() {
@@ -35,6 +42,11 @@ class MainPage extends Component {
             getPlacesNearby(lastUserLocation.lat, lastUserLocation.lng)
         }
     }
+
+    onStoryChange (e) {
+        lastActiveTab = e.currentTarget.dataset.story
+        this.setState({ activeStory: lastActiveTab })
+    }    
 
     checkHash(props) {
         if (props.hash && !props.redirectedFromHash) {
@@ -59,58 +71,51 @@ class MainPage extends Component {
 
     render() {
         const {places, lastUserLocation} = this.props;
-        const isMap = this.state.activeTab === MAP
-        const isProfile = this.state.activeTab === PROFILE
-        const isTop = this.state.activeTab === TOP
         return (
-            <UI.Root activeView="view1">
-            <UI.View activePanel="panel_content" id="view1">
-                <UI.Panel id="panel_content">
-                    <UI.PanelHeader noShadow>Где Шаверма</UI.PanelHeader>
-                    <UI.Tabs theme={UI.platform() === UI.IOS ? "light" : "header"}>
-                        <UI.TabsItem
-                            onClick={() => {
-                                lastActiveTap = MAP
-                                this.setState({ activeTab: MAP })}
-                            }
-                            selected={isMap}
-                        >
-                            Карта
-                        </UI.TabsItem>
-                        <UI.TabsItem
-                            onClick={() => {
-                                lastActiveTap = TOP
-                                this.setState({ activeTab: TOP })}
-                            }
-                            selected={isTop}
-                        >
-                            Подборка
-                        </UI.TabsItem>
-                        <UI.TabsItem
-                            onClick={() => {
-                                lastActiveTap = PROFILE
-                                this.setState({ activeTab: PROFILE })}
-                            }
-                            selected={isProfile}
-                        >
-                            Профиль
-                        </UI.TabsItem>
-                    </UI.Tabs>
-                    {isMap ?
+            <UI.Epic activeStory={this.state.activeStory} tabbar={
+                <UI.Tabbar>
+                  <UI.TabbarItem
+                    onClick={this.onStoryChange}
+                    selected={this.state.activeStory === MAP}
+                    data-story={MAP}
+                    text="Карта"
+                  ><Icon24Map /></UI.TabbarItem>
+                  <UI.TabbarItem
+                    onClick={this.onStoryChange}
+                    selected={this.state.activeStory === TOP}
+                    data-story={TOP}
+                    text="Подборка"
+                  ><Icon24List /></UI.TabbarItem>
+                  <UI.TabbarItem
+                    onClick={this.onStoryChange}
+                    selected={this.state.activeStory === PROFILE}
+                    data-story={PROFILE}
+                    text="Профиль"
+                  ><Icon24Profile /></UI.TabbarItem>
+                </UI.Tabbar>
+                }>
+                <UI.View id={MAP} activePanel={MAP}>
+                    <UI.Panel id={MAP}>
+                        <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
                         <MapComponent places={places}
                                         location={lastUserLocation}
                                         handleShowPlace={this.handleShowPlace}
                                         handleLocationChanged={this.handleLocationChanged} />
-                        : null}
-                    {isProfile ?
-                        <ProfilePage handleShowPlace={this.handleShowPlace}/>
-                        : null}
-                    {isTop ?
+                    </UI.Panel>
+                </UI.View>
+                <UI.View id={TOP} activePanel={TOP}>
+                    <UI.Panel id={TOP}>
+                        <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
                         <TopPage handleShowPlace={this.handleShowPlace} lastUserLocation={lastUserLocation}/>
-                    : null}
-                </UI.Panel>
-            </UI.View>
-            </UI.Root>
+                    </UI.Panel>
+                </UI.View>
+                <UI.View id={PROFILE} activePanel={PROFILE}>
+                    <UI.Panel id={PROFILE}>
+                        <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
+                        <ProfilePage handleShowPlace={this.handleShowPlace}/>
+                    </UI.Panel>
+                </UI.View>
+            </UI.Epic>
         )
     }
 }

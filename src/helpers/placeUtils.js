@@ -5,9 +5,15 @@ import shaFourIcon from '../assets/sha_pin_04.png'
 import shaFiveIcon from '../assets/sha_pin_05.png'
 import shaGoldIcon from '../assets/sha_pin_gold.png'
 import shaNewIcon from '../assets/sha_pin_new.png'
+import shaPizzaIcon from '../assets/sha_pin_pizza.png'
+import shaBurgerIcon from '../assets/sha_pin_burger.png'
 
 export function getIconForPlace(place) {
-    if (place.status === "promoted") {
+    if (place.type === "burger") {
+        return shaBurgerIcon
+    } else if (place.type === "pizza") {
+        return shaPizzaIcon
+    } else if (place.status === "promoted") {
         return shaGoldIcon
     } else if (place.ratesCount < 3) {
         return shaNewIcon

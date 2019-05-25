@@ -12,6 +12,9 @@ class ProfileComponent extends Component {
     handleShowPlace(place) {
         this.props.handleShowPlace(place)
     }
+    handleRefresh() {
+        this.props.handleRefresh()
+    }
     render() {
         const {user, profile, profileLoading} = this.props
         if (!user) {
@@ -52,13 +55,14 @@ class ProfileComponent extends Component {
 
         return (
             <UI.Panel id="profilePanel" className="noPaddingFromPanel">
-                <UI.Group title="Мой профиль">
-                    <UI.List className="bottomPaddingGroup">
-                        <UI.ListItem before={<UI.Avatar size={64} src={user.photo_200} />}
-                                title={`${user.first_name} ${user.last_name}`}
-                                description={regDate ? `Ищет шаверму с ${getDateFromTimestamp(regDate)}` : null}>{`${user.first_name} ${user.last_name}`}</UI.ListItem>
-                    </UI.List>
-                </UI.Group>
+                <UI.PullToRefresh onRefresh={this.handleRefresh.bind(this)} isFetching={Boolean(profileLoading && profile)}>
+                    <UI.Group title="Мой профиль">
+                        <UI.List className="bottomPaddingGroup">
+                            <UI.ListItem before={<UI.Avatar size={64} src={user.photo_200} />}
+                                    title={`${user.first_name} ${user.last_name}`}
+                                    description={regDate ? `Ищет шаверму с ${getDateFromTimestamp(regDate)}` : null}>{`${user.first_name} ${user.last_name}`}</UI.ListItem>
+                        </UI.List>
+                    </UI.Group>
                 {comments && comments.length ?
                     <UI.Group title={'Мои оценки: ' + comments.length} className="bottomPaddingGroup">
                             <UI.List>
@@ -69,6 +73,7 @@ class ProfileComponent extends Component {
                     ? <UI.Group title={'Мои оценки'}><UI.Div className="bottomPaddingGroup" style={{fontSize: 14, color: UI.colors.captionGray}}>Пока нет оценок</UI.Div></UI.Group>
                     : null
                 }
+                </UI.PullToRefresh>
                 <Footer/>
             </UI.Panel>
         )
@@ -79,7 +84,8 @@ ProfileComponent.propTypes = {
     user: PropTypes.object,
     profile: PropTypes.object,
     profileLoading: PropTypes.bool,
-    handleShowPlace: PropTypes.func
+    handleShowPlace: PropTypes.func,
+    handleRefresh: PropTypes.func
 }
 
 export default ProfileComponent

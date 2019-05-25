@@ -9,9 +9,11 @@ class TopComponent extends Component {
     handleShowPlace(place) {
         this.props.handleShowPlace(place)
     }
-
+    handleRefresh() {
+        this.props.handleRefresh()
+    }
     render() {
-        const {places} = this.props
+        const {places, topLoading} = this.props
         const renderPlace = (place) => {
             const hasAds = place.status === "promoted"
             return (
@@ -33,11 +35,13 @@ class TopComponent extends Component {
         return (
             <UI.Panel id="topPanel" className="noPaddingFromPanel">
                 {places && places.length ?
-                    <UI.Group className="bottomPaddingGroup">
-                            <UI.List>
-                                {places.map(renderPlace)}
-                            </UI.List>
-                    </UI.Group>
+                    <UI.PullToRefresh onRefresh={this.handleRefresh.bind(this)} isFetching={Boolean(topLoading)}>
+                        <UI.Group className="bottomPaddingGroup">
+                                <UI.List>
+                                    {places.map(renderPlace)}
+                                </UI.List>
+                        </UI.Group>
+                    </UI.PullToRefresh>
                     : null
                 }
                 <Footer/>
@@ -49,7 +53,9 @@ class TopComponent extends Component {
 
 TopComponent.propTypes = {
     places: PropTypes.array,
-    handleShowPlace: PropTypes.func
+    topLoading: PropTypes.bool,
+    handleShowPlace: PropTypes.func,
+    handleRefresh: PropTypes.func
 }
 
 export default TopComponent

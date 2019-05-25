@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import * as UI from '@vkontakte/vkui';
+import ReactDOM from 'react-dom'
 
 import Icon24View from '@vkontakte/icons/dist/24/view';
 import Icon24Recent from '@vkontakte/icons/dist/24/recent';
 import Icon24MoneyCircle from '@vkontakte/icons/dist/24/money_circle';
 import Icon24Phone from '@vkontakte/icons/dist/24/phone';
-import Icon24Globe from '@vkontakte/icons/dist/24/globe';
+import Icon24Link from '@vkontakte/icons/dist/24/link';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Info from '@vkontakte/icons/dist/24/info';
@@ -18,13 +19,13 @@ import './PlaceComponent.css'
 import {getImageForPlace, getIconForPlace,
     getRatingForPlace, getDateFromTimestamp, getImageUrl, getUrl, getRatingString} from '../helpers/placeUtils'
 
-import icBeer from '../assets/ic_beer_circle.png'
-import icWC from '../assets/ic_wc_circle.png'
-import icVeg from '../assets/ic_veg_circle.png'
-import icCoal from '../assets/ic_coal_circle.png'
-import icSupplier from '../assets/ic_supplier_circle.png'
-import icCard from '../assets/ic_card_circle.png'
-import icHyg from '../assets/ic_hyg_circle.png'
+import icBeer from '../assets/ic_beer.png'
+import icWC from '../assets/ic_toilet.png'
+import icVeg from '../assets/ic_vegan.png'
+import icCoal from '../assets/ic_fire.png'
+import icSupplier from '../assets/ic_meat.png'
+import icCard from '../assets/ic_card.png'
+import icHyg from '../assets/ic_hygene.png'
 
 import Footer from './Footer'
 
@@ -47,10 +48,54 @@ const specialsAvatarStyle = {
 }
 
 class PlaceComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.containerRef = React.createRef();
+        this.tryToLoadMore = this.tryToLoadMore.bind(this);
+
+        const before = props.placeComments &&  props.placeComments[0] ? props.placeComments[0].date : 0;
+        this.state = {
+            pageNumber: 0,
+            before: before
+        }
+    }
+    componentDidMount() {
+        document.addEventListener('scroll', this.trackScrolling.bind(this));
+    }
+    
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.trackScrolling.bind(this));
+    }
+
+    trackScrolling() {
+        try {
+            const element = ReactDOM.findDOMNode(this.containerRef.current).firstChild;
+            const isBottom = window.scrollY + window.innerHeight >= element.scrollHeight
+            if (isBottom) {
+                this.tryToLoadMore();
+            }
+        } catch (e) {
+
+        }
+    }
+
+    tryToLoadMore() {
+        const {noMoreComments, placeLoading, getCommentsForPlace} = this.props;
+        const {pageNumber, before} = this.state;
+        if (!placeLoading && !noMoreComments) {
+            getCommentsForPlace(pageNumber, before);
+            this.setState({
+                pageNumber: pageNumber + 1
+            })
+        }
+    }
+
     render() {
-        const place = this.props.place || {}
+        const place = this.props.place || {};
         const hasUserInfo = Boolean(this.props.user);
-        const user = this.props.user || {}
+        const user = this.props.user || {};
+        const placeComments = this.props.placeComments || [];
+        const commentsLoading = Boolean(this.props.commentsLoading);
 
         const renderReview = (review) => {
             const url = review.reviewer.name === "emshavermu" ? "https://vk.com/emshavermu" : review.url;
@@ -85,15 +130,12 @@ class PlaceComponent extends Component {
                 </UI.Div>)
         }
 
-        const hasComments = place.comments && place.comments.length > 0
+        const hasComments = placeComments && placeComments.length > 0
         const hasReviews = place.reviews && place.reviews.length > 0
         const hasSpecials = place.supplierId > 0 || place.hasVisa || place.hasFalafel || place.hasBeer || place.hasWC || place.hasOnCoal || place.hasHygiene
 
-        const isIos = UI.platform() === UI.IOS
-        const appLink = isIos ? 'https://itunes.apple.com/ru/app/gde-saverma-poisk-saurmy-v/id1141097185' : 'https://play.google.com/store/apps/details?id=ru.gdeshaverma.android'
-
         return (
-            <UI.Panel id={this.props.id}>
+            <UI.Panel id={this.props.id} ref={this.containerRef}>
                 <UI.PanelHeader
                     left={<UI.HeaderButton onClick={this.props.goBack}>{UI.platform() === UI.IOS ? <Icon28ChevronBack /> : <Icon24Back />}</UI.HeaderButton>}
                 >{place.name}</UI.PanelHeader>
@@ -106,7 +148,7 @@ class PlaceComponent extends Component {
                         {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
                         {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
                         {place.phoneNumber ? <UI.ListItem before={<Icon24Phone />}><UI.Link href={'tel:' + place.phoneNumber} target="_blank">{place.phoneNumber}</UI.Link></UI.ListItem> : null }
-                        {place.site ? <UI.ListItem before={<Icon24Globe />}><UI.Link href={getUrl(place.site)} target="_blank">{place.site}</UI.Link></UI.ListItem> : null }
+                        {place.site ? <UI.ListItem before={<Icon24Link />}><UI.Link href={getUrl(place.site)} target="_blank">{place.site}</UI.Link></UI.ListItem> : null }
                         <UI.ListItem before={<Icon24View />}>{place.visits}</UI.ListItem>
                     </UI.List>
                 </UI.Group>
@@ -117,58 +159,35 @@ class PlaceComponent extends Component {
                 </UI.Group>
                 <UI.Group title="Рейтинг">
                     <UI.List className="bottomPaddingGroup">
-                        <UI.ListItem before={<UI.Avatar type="image" size={64} style={{backgroundColor: 'white'}} src={getIconForPlace(place)} />}
+                        <UI.ListItem before={<UI.Avatar type="image" size={64} style={{backgroundColor: 'var(--background_content)'}} src={getIconForPlace(place)} />}
                             description={"Всего оценок: " + place.ratesCount}>{getRatingForPlace(place)}</UI.ListItem>
                     </UI.List>
                 </UI.Group>
                 {hasSpecials ?
-                <UI.Group title="Особенности">
-                    <UI.HorizontalScroll className="bottomPaddingGroup">
-                        <div style={{ display: 'flex' }}>
+                <UI.Group>
+                    <UI.List className="paddingGroup">
                         {place.supplierId > 0 ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icSupplier}/>
-                                Проверенный поставщик
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icSupplier} type={"image"} />}>Проверенный поставщик</UI.Cell>
                         : null }
                         {place.hasVisa ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icCard}/>
-                                 Оплата по&nbsp;карте
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icCard} type={"image"} />}>Оплата по&nbsp;карте</UI.Cell>
                         : null }
                         {place.hasFalafel ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icVeg}/>
-                                 Веганские блюда
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icVeg} type={"image"} />}>Вегетарианские блюда</UI.Cell>
                         : null }
                         {place.hasBeer ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icBeer}/>
-                                 Пиво
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icBeer} type={"image"} />}>Пиво</UI.Cell>
                         : null }
                         {place.hasWC ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icWC}/>
-                                 Туалет
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icWC} type={"image"} />}>Туалет</UI.Cell>
                         : null }
                         {place.hasOnCoal ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icCoal}/>
-                                Готовят на&nbsp;углях
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icCoal} type={"image"} />}>Готовят на&nbsp;углях</UI.Cell>
                         : null }
                         {place.hasHygiene ? 
-                            <div style={specialsStyle}>
-                                <UI.Avatar size={64} style={specialsAvatarStyle} src={icHyg}/>
-                                Гигиена на&nbsp;кухне
-                            </div>
+                            <UI.Cell before={<UI.Avatar src={icHyg} type={"image"} />}>Гигиена на&nbsp;кухне</UI.Cell>
                         : null }
-                        </div>
-                    </UI.HorizontalScroll>
+                    </UI.List>
                 </UI.Group>
                 : null }
                 {hasReviews ?
@@ -197,12 +216,6 @@ class PlaceComponent extends Component {
                     </UI.Group>
                     : null
                 }
-                {hasComments ?
-                    <UI.Group title="Последние отзывы" className="bottomPaddingGroup">
-                        {place.comments.map(renderComment)}
-                        {place.commentsCount > 3 ? <UI.Div><UI.Button level="sell" size="xl" component="a" href={appLink} target="_blank">Больше отзывов в приложении</UI.Button></UI.Div> : null}
-                    </UI.Group>
-                : null}
                 {place.lastDiscount ?
                     <UI.Group title="Акции">
                         <UI.Div style={{fontSize: 14, lineHeight: 1.5}}>
@@ -212,6 +225,13 @@ class PlaceComponent extends Component {
                         </UI.Div>
                     </UI.Group>
                     : null }
+                {hasComments ?
+                    <UI.Group title="Отзывы" className="bottomPaddingGroup">
+                        {placeComments.map(renderComment)}
+                        {commentsLoading ? <UI.Div><UI.Spinner size="regular" style={{ marginTop: 20 }} /></UI.Div>
+                        : null}
+                    </UI.Group>
+                : null}
                 <Footer/>
             </UI.Panel>)
     }
@@ -224,8 +244,12 @@ PlaceComponent.propTypes = {
     userAvatar: PropTypes.string,
     openRatingDialog: PropTypes.func,
     openPlaceLocation: PropTypes.func,
+    getCommentsForPlace: PropTypes.func,
     shareVK: PropTypes.func,
     goBack: PropTypes.func,
+    commentsLoading: PropTypes.bool,
+    noMoreComments: PropTypes.bool,
+    placeComments: PropTypes.array,
     deleteRating: PropTypes.func
 }
 
