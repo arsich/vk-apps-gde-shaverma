@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import * as UI from '@vkontakte/vkui';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 
 import Icon24View from '@vkontakte/icons/dist/24/view';
 import Icon24Recent from '@vkontakte/icons/dist/24/recent';

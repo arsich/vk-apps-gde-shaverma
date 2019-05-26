@@ -4,9 +4,16 @@ import {GET_NEARBY, GET_NEARBY_SUCCESS, GET_NEARBY_FAIL,
     GET_TOP, GET_TOP_FAIL, GET_TOP_SUCCESS,
     GET_COMMENTS_FOR_PLACE,
     GET_COMMENTS_FOR_PLACE_FAIL,
-    GET_COMMENTS_FOR_PLACE_SUCCESS} from '../actions/places'
+    GET_COMMENTS_FOR_PLACE_SUCCESS, 
+    GET_LAST_COMMENTS, GET_LAST_COMMENTS_SUCCESS, GET_LAST_COMMENTS_FAIL} from '../actions/places'
 
-export default function placesReducer(state = {placesWithAllComments: [], placesComments: {}}, action = {}) {
+const defaultState = {
+    placesWithAllComments: [],
+    lastComments: [],
+    placesComments: {}
+};
+
+export default function placesReducer(state = defaultState, action = {}) {
     switch (action.type) {
         case GET_NEARBY:
             return {
@@ -122,6 +129,30 @@ export default function placesReducer(state = {placesWithAllComments: [], places
             return {
                 ...state,
                 commentsLoading: false
+            };
+        case GET_LAST_COMMENTS:
+            const lastComm = action.forceUpdate ? [] : state.lastComments;
+            const noMore = action.forceUpdate ? false : state.hasNoMoreLastComments;
+            return {
+                ...state,
+                lastComments: lastComm,
+                hasNoMoreLastComments: noMore,
+                lastCommentsLoading: true
+            };
+        case GET_LAST_COMMENTS_SUCCESS:
+            let lastComments = state.lastComments || [];
+            lastComments = lastComments.concat(action.result.result);
+            const hasNoMoreLastComments = hasNoMoreCommentsFunc(action.result.result);
+            return {
+                ...state,
+                lastComments,
+                hasNoMoreLastComments,
+                lastCommentsLoading: false
+            };
+        case GET_LAST_COMMENTS_FAIL:
+            return {
+                ...state,
+                lastCommentsLoading: false
             };
         default:
             return state;

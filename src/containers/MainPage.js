@@ -11,15 +11,17 @@ import * as UI from '@vkontakte/vkui';
 import MapComponent from '../components/MapComponent'
 
 import ProfilePage from './ProfilePage'
+import ReviewsPage from './ReviewsPage'
 import TopPage from './TopPage'
-
 
 import Icon24Map from '@vkontakte/icons/dist/24/globe';
 import Icon24List from '@vkontakte/icons/dist/24/list';
 import Icon24Profile from '@vkontakte/icons/dist/24/user_outline';
+import Icon24CommentOutline from '@vkontakte/icons/dist/24/comment_outline';
 
 const MAP = 'map'
 const TOP = 'top'
+const REVIEWS = 'reviews'
 const PROFILE = 'profile'
 
 let lastActiveTab = MAP
@@ -88,6 +90,12 @@ class MainPage extends Component {
                   ><Icon24List /></UI.TabbarItem>
                   <UI.TabbarItem
                     onClick={this.onStoryChange}
+                    selected={this.state.activeStory === REVIEWS}
+                    data-story={REVIEWS}
+                    text="Отзывы"
+                  ><Icon24CommentOutline /></UI.TabbarItem>
+                  <UI.TabbarItem
+                    onClick={this.onStoryChange}
                     selected={this.state.activeStory === PROFILE}
                     data-story={PROFILE}
                     text="Профиль"
@@ -113,6 +121,12 @@ class MainPage extends Component {
                     <UI.Panel id={PROFILE}>
                         <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
                         <ProfilePage handleShowPlace={this.handleShowPlace}/>
+                    </UI.Panel>
+                </UI.View>
+                <UI.View id={REVIEWS} activePanel={REVIEWS}>
+                    <UI.Panel id={REVIEWS}>
+                        <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
+                        <ReviewsPage handleShowPlace={this.handleShowPlace}/>
                     </UI.Panel>
                 </UI.View>
             </UI.Epic>

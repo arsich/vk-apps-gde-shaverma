@@ -10,10 +10,9 @@ import * as UI from '@vkontakte/vkui';
 
 class MapComponent extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         const location = props.location
-
 
         this.state = {
             map: { center: [location.lat, location.lng], zoom: 15, controls: [] },
@@ -39,7 +38,7 @@ class MapComponent extends Component {
     getMapHeight() {
         const browserHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight
         // tabbar height
-        const mapBottom = UI.platform() === UI.IOS ? 92 : 104
+        const mapBottom = UI.platform() === UI.IOS ? 96 : 104
         return browserHeight - mapBottom
     }
 

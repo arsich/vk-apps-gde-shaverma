@@ -104,5 +104,5 @@ export function getLastComments(pageNumber, before) {
             pageNumber,
             before
         }
-    }}
+    }, forceUpdate: pageNumber == 0}
 }
