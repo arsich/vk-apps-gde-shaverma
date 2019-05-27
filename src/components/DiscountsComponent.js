@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import * as UI from '@vkontakte/vkui'
 import ReactDOM from 'react-dom'
 
-import {getImageUrl, getImageForPlace, getRatingString, getDateFromTimestamp} from '../helpers/placeUtils'
+import {getImageUrl, getImageForPlace, getDateFromTimestamp} from '../helpers/placeUtils'
 import Footer from './Footer'
 
 class DiscountsComponent extends Component {
@@ -11,6 +11,10 @@ class DiscountsComponent extends Component {
         super(props);
         this.containerRef = React.createRef();
         this.handleShowMore = this.handleShowMore.bind(this);
+
+        this.state = {
+            wasRefreshed: false
+        }
     }
     componentDidMount() {
         document.addEventListener('scroll', this.trackScrolling.bind(this));
@@ -37,6 +41,10 @@ class DiscountsComponent extends Component {
     }
     handleRefresh() {
         this.props.handleRefresh()
+
+        this.setState({
+            wasRefreshed: true
+        })
     }
     handleShowPlace(place) {
         if (place) {
@@ -49,7 +57,8 @@ class DiscountsComponent extends Component {
             return (
                 <UI.Cell
                     key={"last_discount_" + discount.id}
-                    before={<UI.Avatar size={72} type='app' src={getImageForPlace(discount.place)} />}
+                    before={<UI.Avatar size={72} type='app' src={getImageForPlace(discount.place)}/>}
+                    onClick={this.handleShowPlace.bind(this, discount.place)}
                     description={<div>
                                     {getDateFromTimestamp(discount.date)}
                                 </div>}
@@ -57,8 +66,7 @@ class DiscountsComponent extends Component {
                     bottomContent={
                         <div style={{}}>
                             <img style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-                                src={getImageUrl(discount.picture)}
-                                onClick={this.handleShowPlace.bind(this, discount.place)}/>
+                                src={getImageUrl(discount.picture)}/>
                             {discount.text}
                         </div>
                     }
@@ -69,7 +77,7 @@ class DiscountsComponent extends Component {
         }
         return (
             <UI.Panel id="discountPanel" className="noPaddingFromPanel" ref={this.containerRef}>
-                {lastDiscounts && lastDiscounts.length ?
+                {lastDiscounts && (lastDiscounts.length || this.state.wasRefreshed) ?
                     <UI.PullToRefresh onRefresh={this.handleRefresh.bind(this)} isFetching={Boolean(lastDiscountsLoading)}>
                         <UI.Group className="bottomPaddingGroup">
                                 <UI.List>

@@ -11,6 +11,10 @@ class ReviewsComponent extends Component {
         super(props);
         this.containerRef = React.createRef();
         this.handleShowMore = this.handleShowMore.bind(this);
+
+        this.state = {
+            wasRefreshed: false
+        }
     }
     componentDidMount() {
         document.addEventListener('scroll', this.trackScrolling.bind(this));
@@ -37,6 +41,8 @@ class ReviewsComponent extends Component {
     }
     handleRefresh() {
         this.props.handleRefresh()
+
+        this.setState({wasRefreshed: true})
     }
     handleShowPlace(place) {
         this.props.handleShowPlace(place)
@@ -46,6 +52,8 @@ class ReviewsComponent extends Component {
         const renderComment = (comment) => {
             const isIos = UI.platform() === UI.IOS
             const shadowHeight = isIos ? '57px' : '55px';
+            const shadowLeft= isIos ? '96px' : '100px';
+            const shadowRight= isIos ? '20px' : '24px';
             const placeNameStyle = { position: 'absolute', color: 'white', left: '105px', 
                 top: '165px', right: '20px', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}
             return (
@@ -62,7 +70,7 @@ class ReviewsComponent extends Component {
                             <img style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
                                 src={getImageForPlace(comment.place)}
                                 onClick={this.handleShowPlace.bind(this, comment.place)}/>
-                            <div style={{position: 'absolute', left: '96px', right: '20px',
+                            <div style={{position: 'absolute', left: shadowLeft, right: shadowRight,
                              top: '162px', height: shadowHeight, borderRadius: '8px'}} className="backgroundShadow"></div>
                             <div style={placeNameStyle}>{comment.place.name}</div>
                             <div style={{...placeNameStyle, top: '185px',  
@@ -77,7 +85,7 @@ class ReviewsComponent extends Component {
         }
         return (
             <UI.Panel id="reviewsPanel" className="noPaddingFromPanel" ref={this.containerRef}>
-                {lastComments && lastComments.length ?
+                {lastComments && (lastComments.length || this.state.wasRefreshed) ?
                     <UI.PullToRefresh onRefresh={this.handleRefresh.bind(this)} isFetching={Boolean(lastCommentsLoading)}>
                         <UI.Group className="bottomPaddingGroup">
                                 <UI.List>
