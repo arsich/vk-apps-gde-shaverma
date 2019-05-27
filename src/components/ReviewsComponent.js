@@ -45,7 +45,7 @@ class ReviewsComponent extends Component {
         const {lastComments, lastCommentsLoading} = this.props
         const renderComment = (comment) => {
             const isIos = UI.platform() === UI.IOS
-            const shadowHeight = isIos ? '57px' : '52px';
+            const shadowHeight = isIos ? '57px' : '55px';
             const placeNameStyle = { position: 'absolute', color: 'white', left: '105px', 
                 top: '165px', right: '20px', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}
             return (

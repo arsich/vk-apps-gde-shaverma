@@ -106,3 +106,18 @@ export function getLastComments(pageNumber, before) {
         }
     }, forceUpdate: pageNumber == 0}
 }
+
+export const GET_LAST_DISCOUNTS = 'places/GET_LATEST_DISCOUNTS';
+export const GET_LAST_DISCOUNTS_SUCCESS = 'places/GET_LATEST_DISCOUNTS_SUCCESS';
+export const GET_LAST_DISCOUNTS_FAIL = 'places/GET_LATEST_DISCOUNTS_FAIL';
+
+export function getLastDiscounts(pageNumber, before) {
+    return {[CALL_API]: {
+        types: [GET_LAST_DISCOUNTS, GET_LAST_DISCOUNTS_SUCCESS, GET_LAST_DISCOUNTS_FAIL],
+        endpoint: 'Discounts/getLatest',
+        query: {
+            pageNumber,
+            before
+        }
+    }, forceUpdate: pageNumber == 0}
+}

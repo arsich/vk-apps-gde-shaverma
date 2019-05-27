@@ -13,16 +13,19 @@ import MapComponent from '../components/MapComponent'
 import ProfilePage from './ProfilePage'
 import ReviewsPage from './ReviewsPage'
 import TopPage from './TopPage'
+import DiscountsPage from './DiscountsPage'
 
 import Icon24Map from '@vkontakte/icons/dist/24/globe';
 import Icon24List from '@vkontakte/icons/dist/24/list';
 import Icon24Profile from '@vkontakte/icons/dist/24/user_outline';
 import Icon24CommentOutline from '@vkontakte/icons/dist/24/comment_outline';
+import Icon24Gift from '@vkontakte/icons/dist/24/gift';
 
 const MAP = 'map'
 const TOP = 'top'
 const REVIEWS = 'reviews'
 const PROFILE = 'profile'
+const DISCOUNTS = 'discounts'
 
 let lastActiveTab = MAP
 
@@ -96,6 +99,12 @@ class MainPage extends Component {
                   ><Icon24CommentOutline /></UI.TabbarItem>
                   <UI.TabbarItem
                     onClick={this.onStoryChange}
+                    selected={this.state.activeStory === DISCOUNTS}
+                    data-story={DISCOUNTS}
+                    text="Акции"
+                  ><Icon24Gift /></UI.TabbarItem>
+                  <UI.TabbarItem
+                    onClick={this.onStoryChange}
                     selected={this.state.activeStory === PROFILE}
                     data-story={PROFILE}
                     text="Профиль"
@@ -127,6 +136,12 @@ class MainPage extends Component {
                     <UI.Panel id={REVIEWS}>
                         <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
                         <ReviewsPage handleShowPlace={this.handleShowPlace}/>
+                    </UI.Panel>
+                </UI.View>
+                <UI.View id={DISCOUNTS} activePanel={DISCOUNTS}>
+                    <UI.Panel id={DISCOUNTS}>
+                        <UI.PanelHeader>Где Шаверма</UI.PanelHeader>
+                        <DiscountsPage handleShowPlace={this.handleShowPlace}/>
                     </UI.Panel>
                 </UI.View>
             </UI.Epic>

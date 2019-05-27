@@ -5,11 +5,13 @@ import {GET_NEARBY, GET_NEARBY_SUCCESS, GET_NEARBY_FAIL,
     GET_COMMENTS_FOR_PLACE,
     GET_COMMENTS_FOR_PLACE_FAIL,
     GET_COMMENTS_FOR_PLACE_SUCCESS, 
-    GET_LAST_COMMENTS, GET_LAST_COMMENTS_SUCCESS, GET_LAST_COMMENTS_FAIL} from '../actions/places'
+    GET_LAST_COMMENTS, GET_LAST_COMMENTS_SUCCESS, GET_LAST_COMMENTS_FAIL, 
+    GET_LAST_DISCOUNTS, GET_LAST_DISCOUNTS_SUCCESS, GET_LAST_DISCOUNTS_FAIL} from '../actions/places'
 
 const defaultState = {
     placesWithAllComments: [],
     lastComments: [],
+    lastDiscounts: [],
     placesComments: {}
 };
 
@@ -154,11 +156,35 @@ export default function placesReducer(state = defaultState, action = {}) {
                 ...state,
                 lastCommentsLoading: false
             };
+        case GET_LAST_DISCOUNTS:
+            const lastDisc = action.forceUpdate ? [] : state.lastDiscounts;
+            const noMoreD = action.forceUpdate ? false : state.hasNoMoreLastDiscounts;
+            return {
+                ...state,
+                lastDiscounts: lastDisc,
+                hasNoMoreLastDiscounts: noMoreD,
+                lastDiscountsLoading: true
+            };
+        case GET_LAST_DISCOUNTS_SUCCESS:
+            let lastDiscounts = state.lastDiscounts || [];
+            lastDiscounts = lastDiscounts.concat(action.result.result);
+            const hasNoMoreLastDiscounts = hasNoMoreCommentsFunc(action.result.result);
+            return {
+                ...state,
+                lastDiscounts,
+                hasNoMoreLastDiscounts,
+                lastDiscountsLoading: false
+            };
+        case GET_LAST_DISCOUNTS_FAIL:
+            return {
+                ...state,
+                lastDiscountsLoading: false
+            };
         default:
             return state;
     }
 }
 
 function hasNoMoreCommentsFunc(comments) {
-    return comments && comments.length < 10;
+    return comments && comments.length === 0;
 }
