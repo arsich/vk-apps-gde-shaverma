@@ -56,7 +56,7 @@ export function getRatingString(value) {
 
 export function getImageForPlace(place) {
     if (!place) {
-        'https://gdeshaverma.ru/api/v1/containers/images/download/default.png'
+        return 'https://gdeshaverma.ru/api/v1/containers/images/download/default.png'
     }
     return `https://gdeshaverma.ru${place.picture}`
 }

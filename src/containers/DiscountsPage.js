@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import {getLastDiscounts} from '../actions/places'
-import ReviewsComponent from '../components/ReviewsComponent';
+import DiscountsComponent from '../components/DiscountsComponent';
 
 class DiscountsPage extends Component {
     constructor(props) {
@@ -48,7 +48,7 @@ class DiscountsPage extends Component {
     render() {
         const {handleShowPlace, lastDiscountsLoading, hasNoMoreLastDiscounts, lastDiscounts} = this.props
         return (
-            <ReviewsComponent handleRefresh={this.refresh}
+            <DiscountsComponent handleRefresh={this.refresh}
                               handleShowPlace={handleShowPlace}
                               handleShowMore={this.showMore}
                               lastDiscounts={lastDiscounts}

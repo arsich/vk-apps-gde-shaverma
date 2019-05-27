@@ -56,7 +56,7 @@ class DiscountsComponent extends Component {
                     size="l"
                     bottomContent={
                         <div style={{}}>
-                            <img style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
+                            <img style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
                                 src={getImageUrl(discount.picture)}
                                 onClick={this.handleShowPlace.bind(this, discount.place)}/>
                             {discount.text}
