@@ -17,19 +17,17 @@ class TopComponent extends Component {
         const renderPlace = (place) => {
             const hasAds = place.status === "promoted"
             return (
-                <UI.ListItem
+                <UI.Cell
                     key={"place_top_" + place.id}
-                    onClick={this.handleShowPlace.bind(this, place)}>
-                    <UI.Entity photo={getImageUrl(place.picture)}
-                               avatarProps={{size: 64, type: 'image'}}
-                               title={place.name}
-                               description={<div style={{marginTop: 5}}>
-                                    <div className='ratingLabel'>{getRatingString(place.rate)}</div>
-                                    {place.description}
-                                </div>}>
-                                {hasAds ? <div className='promoLabel'>Реклама</div> : null}
-                    </UI.Entity>
-                </UI.ListItem>
+                    onClick={this.handleShowPlace.bind(this, place)}
+                    before={<UI.Avatar size={72} type='app' src={getImageUrl(place.picture)} />}
+                    description={<div style={{marginTop: 5, textOverflow: 'ellipsis', overflow: 'hidden'}}>
+                        <div className='ratingLabel'>{getRatingString(place.rate)}</div>
+                        {place.description}
+                    </div>}
+                    bottomContent={hasAds ? <div className='promoLabel'>Реклама</div> : null}>
+                    {place.name}
+                </UI.Cell>
             )
         }
         return (
