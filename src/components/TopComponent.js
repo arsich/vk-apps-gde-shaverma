@@ -25,6 +25,7 @@ class TopComponent extends Component {
                         <div className='ratingLabel'>{getRatingString(place.rate)}</div>
                         {place.description}
                     </div>}
+                    size="l"
                     bottomContent={hasAds ? <div className='promoLabel'>Реклама</div> : null}>
                     {place.name}
                 </UI.Cell>
