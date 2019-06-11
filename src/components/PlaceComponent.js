@@ -19,6 +19,8 @@ import './PlaceComponent.css'
 import {getImageForPlace, getIconForPlace,
     getRatingForPlace, getDateFromTimestamp, getImageUrl, getUrl, getRatingString} from '../helpers/placeUtils'
 
+import {truncateText} from '../helpers/common'
+
 import icBeer from '../assets/ic_beer.png'
 import icWC from '../assets/ic_toilet.png'
 import icVeg from '../assets/ic_vegan.png'
@@ -134,11 +136,13 @@ class PlaceComponent extends Component {
         const hasReviews = place.reviews && place.reviews.length > 0
         const hasSpecials = place.supplierId > 0 || place.hasVisa || place.hasFalafel || place.hasBeer || place.hasWC || place.hasOnCoal || place.hasHygiene
 
+        const title = UI.platform() === UI.IOS ? truncateText(place.name, 18) : place.name
+
         return (
             <UI.Panel id={this.props.id} ref={this.containerRef}>
                 <UI.PanelHeader
                     left={<UI.HeaderButton onClick={this.props.goBack}>{UI.platform() === UI.IOS ? <Icon28ChevronBack /> : <Icon24Back />}</UI.HeaderButton>}
-                >{place.name}</UI.PanelHeader>
+                >{title}</UI.PanelHeader>
                 <img src={getImageForPlace(place)} className="imageBig" alt={place.name} />
                 <UI.Group>
                     <UI.Header>{place.name}</UI.Header>

@@ -13,3 +13,10 @@ export function notInVK() {
     var isDesktop = !androidBridge && !iosBridge;
     return isDesktop && !checkIfIframe();
 }
+
+export function truncateText(input, length) {
+    if (input.length > length)
+       return input.substring(0, length) + '...';
+    else
+       return input;
+ };
