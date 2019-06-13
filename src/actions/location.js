@@ -10,6 +10,7 @@ export function sendNewLocation(location) {
 }
 
 export const NEW_REQUESTED_LOCATION = 'location/NEW_REQUESTED_LOCATION'
+export const NEW_REQUESTED_ZOOM = 'location/NEW_REQUESTED_ZOOM'
 
 export function sendLastRequestedLocation(lat, lng) {
     return {
@@ -17,6 +18,15 @@ export function sendLastRequestedLocation(lat, lng) {
         data: {
             lat,
             lng
+        }
+    }
+}
+
+export function sendLastRequestedZoom(zoom) {
+    return {
+        type: NEW_REQUESTED_ZOOM,
+        data: {
+            zoom
         }
     }
 }

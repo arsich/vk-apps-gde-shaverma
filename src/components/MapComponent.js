@@ -13,10 +13,11 @@ class MapComponent extends Component {
         super(props)
 
         const location = props.location
+        const zoom = props.zoom || 15
 
         this.state = {
-            map: { center: [location.lat, location.lng], zoom: 15, controls: [] },
-            zoom: 15,
+            map: { center: [location.lat, location.lng], zoom: zoom, controls: [] },
+            zoom: zoom,
             mapHeight: this.getMapHeight()
         }
     }
@@ -51,6 +52,7 @@ class MapComponent extends Component {
         const oldZoom = event.get('oldZoom')
         if (newZoom !== oldZoom) {
             this.setState({zoom: newZoom})
+            this.props.handleZoomChanged(newZoom);
         }
     }
     handleBalloonClicked = (place) => {
@@ -116,7 +118,10 @@ class MapComponent extends Component {
 MapComponent.propTypes = {
     places: PropTypes.array.isRequired,
     handleShowPlace: PropTypes.func.isRequired,
-    location: PropTypes.object
+    handleLocationChanged: PropTypes.func.isRequired,
+    handleZoomChanged: PropTypes.func.isRequired,
+    location: PropTypes.object,
+    zoom: PropTypes.number
 }
 
 export default MapComponent;

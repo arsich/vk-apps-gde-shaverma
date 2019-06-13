@@ -1,9 +1,16 @@
 .imageBig {
     width: 100%;
-    height: 220px;
+    height: 240px;
     overflow: hidden;
     object-fit: cover;
 }
+
+@media (min-width: 512px) and (orientation: landscape) {
+    .imageBig {
+        height: auto;
+        max-height: 512px;
+    }
+ }
 
 .ratingMarginLeft {
     margin-left: 12px;
