@@ -38,6 +38,11 @@ class PlacePage extends Component {
                 ratingValue: nextProps.place.rateByDevice,
                 ratingComment: nextProps.place.rateByDeviceText
             })
+        } else {
+            this.setState({
+                ratingValue: 5,
+                ratingComment: ''
+            })
         }
 
         if (nextProps.ratingUpdated && !this.props.ratingUpdated) {

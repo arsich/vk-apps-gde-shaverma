@@ -45,6 +45,7 @@ class MapComponent extends Component {
 
     handleLocationChanged = (event) => {
         this.props.handleLocationChanged(event.get('target').getCenter())
+        this.props.handleZoomChanged(event.get('target').getZoom());
     }
 
     handleBoundsChange = (event) => {
