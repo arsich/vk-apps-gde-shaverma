@@ -54,6 +54,17 @@ class PlaceLocationPage extends Component {
         return browserHeight - mapTop
     }
 
+    handlePlaceClicked = () => {
+        this.props.goBack()
+    }
+
+    
+    handleOpenMapClicked = () => {
+        const {location} = this.props;
+        const url = `https://maps.yandex.ru/?z=15&ll=${location.lng},${location.lat}&l=map&rtext=~${location.lat},${location.lng}&mode=routes`;
+        window.location.replace(url);
+    }
+
     render() {
         const renderPlaceMark = (place) => {
             const iconLayout = `
@@ -70,6 +81,7 @@ class PlaceLocationPage extends Component {
                               properties={{
                                   iconContent: iconLayout
                               }}
+                              onClick={this.handlePlaceClicked}
                               options={{
                                   iconLayout: 'default#imageWithContent',
                                   iconImageHref: '',
@@ -96,6 +108,8 @@ class PlaceLocationPage extends Component {
                             {renderPlaceMark(this.props.place)}
                         </Map>
                     </YMaps>
+                    <div style={{position: 'absolute', backgroundColor:'#00000000', width: '160px', height: '36px', bottom: '0px'}}
+                            onClick={this.handleOpenMapClicked}></div>
                 </UI.Panel>
             </UI.View>
         )

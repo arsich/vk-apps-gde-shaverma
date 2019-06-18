@@ -39,7 +39,7 @@ class MapComponent extends Component {
     getMapHeight() {
         const browserHeight = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight
         // tabbar height
-        const mapBottom = UI.platform() === UI.IOS ? 96 : 104
+        const mapBottom = UI.platform() === UI.IOS ? 102 : 104
         return browserHeight - mapBottom
     }
 

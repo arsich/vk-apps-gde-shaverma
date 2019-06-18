@@ -78,6 +78,12 @@ class MainPage extends Component {
         this.props.sendLastRequestedZoom(zoom);
     }
 
+    handleOpenMapClicked = () => {
+        const {lastUserLocation, lastUserZoom} = this.props;
+        const url = `https://maps.yandex.ru/?z=${lastUserZoom}&ll=${lastUserLocation.lng},${lastUserLocation.lat}&l=map`;
+        window.location.replace(url);
+    }
+
     render() {
         const {places, lastUserLocation, lastUserZoom} = this.props;
         return (
@@ -124,6 +130,8 @@ class MainPage extends Component {
                                         handleShowPlace={this.handleShowPlace}
                                         handleLocationChanged={this.handleLocationChanged}
                                         handleZoomChanged={this.handleZoomChanged} />
+                        <div style={{position: 'absolute', backgroundColor:'#ff000000', width: '160px', height: '36px', bottom: '48px'}}
+                            onClick={this.handleOpenMapClicked}></div>
                     </UI.Panel>
                 </UI.View>
                 <UI.View id={TOP} activePanel={TOP}>
