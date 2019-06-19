@@ -9,7 +9,7 @@ import configureStore from './store/configureStore'
 import authHelper from './helpers/authHelper'
 import locationHelper from './helpers/locationHelper'
 
-import registerServiceWorker from './registerServiceWorker'
+import {unregister} from './registerServiceWorker'
 
 import 'core-js/es6/map'
 import 'core-js/es6/set'
@@ -23,4 +23,4 @@ ReactDOM.render(
         <Root store={store} />
     </Router>
     , document.getElementById('root'))
-registerServiceWorker()
+unregister()

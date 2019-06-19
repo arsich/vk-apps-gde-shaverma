@@ -112,24 +112,30 @@ class PlaceComponent extends Component {
 
         const renderComment = (comment) => {
             return (
-                <UI.Div key={"comment_" + comment.id}>
-                    <UI.Entity photo={getImageUrl(comment.user.photoSmall)}
-                               size={64}
-                               title={comment.user.firstName + " " + comment.user.lastName}
-                               description={<div style={{marginTop: 5}}>
+                <UI.Cell
+                    key={"comment_" + comment.id}
+                    before={<UI.Avatar size={72}  src={getImageUrl(comment.user.photoSmall)} />}
+                    description={<div style={{marginTop: 4}}>
                                     <div className='ratingLabel'>{getRatingString(comment.value)}</div>
                                     {getDateFromTimestamp(comment.date)}
-                                </div>}>
-                        <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{comment.text}</div>
-                        {comment.answer ? 
-                            <div style={{lineHeight: 1.5, fontSize: 14, marginTop: 8, padding: 12, minWidth: 200, backgroundColor: UI.colors.backgroundBlue}}>
-                                <div style={{float: 'right', color: UI.colors.captionGray}}>{getDateFromTimestamp(comment.answerDate)}</div>
-                                <div style={{fontWeight: 'bold'}}>Ответ заведения</div>
-                                <div style={{marginTop: 8}}>{comment.answer}</div>
-                            </div>
-                        : null}
-                    </UI.Entity>
-                </UI.Div>)
+                                </div>}
+                    size="l"
+                    bottomContent={
+                        <div style={{}}>
+                            <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{comment.text}</div>
+                            {comment.answer ? 
+                                <div style={{lineHeight: 1.5, fontSize: 14, marginTop: 8, padding: 12, minWidth: 200, backgroundColor: UI.colors.backgroundBlue}}>
+                                    <div style={{float: 'right', color: UI.colors.captionGray}}>{getDateFromTimestamp(comment.answerDate)}</div>
+                                    <div style={{fontWeight: 'bold'}}>Ответ заведения</div>
+                                    <div style={{marginTop: 8}}>{comment.answer}</div>
+                                </div>
+                            : null}
+                        </div>
+                    }
+                    multiline>
+                    {comment.user.firstName + " " + comment.user.lastName}
+                </UI.Cell>
+            )
         }
 
         const hasComments = placeComments && placeComments.length > 0
