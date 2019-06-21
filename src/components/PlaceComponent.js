@@ -207,22 +207,23 @@ class PlaceComponent extends Component {
                 : null}
                 {!place.rateByDeviceBanned && hasUserInfo ?
                     <UI.Group title="Мой отзыв">
-                        <UI.Div>
-                            <UI.Entity
-                                photo={this.props.userAvatar}
-                                size={64}
-                                style={{paddingBottom: 12}}
-                                title={`${user.first_name} ${user.last_name}`}
-                                description={place.rateByDevice ? <div style={{marginTop: 5}}><div className='ratingLabel'>{getRatingString(place.rateByDevice)}</div>{getDateFromTimestamp(place.rateByDeviceDate)}</div> 
+                        <UI.Cell
+                            before={<UI.Avatar size={72}  src={getImageUrl(this.props.userAvatar)} />}
+                            description={place.rateByDevice ? <div style={{marginTop: 5}}><div className='ratingLabel'>{getRatingString(place.rateByDevice)}</div>{getDateFromTimestamp(place.rateByDeviceDate)}</div> 
                                 : <div style={{fontWeight: 'normal', marginTop: 5}}>Вы еще не поставили оценку</div>}
-                                >
-                                {place.rateByDeviceText ? <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{place.rateByDeviceText}</div> : null}
-                                <UI.Button level="buy" 
-                                    style={{marginTop: 16}}
-                                    onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
-                                {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
-                            </UI.Entity>
-                        </UI.Div>
+                            size="l"
+                            bottomContent={
+                                <div style={{}}>
+                                    {place.rateByDeviceText ? <div style={{lineHeight: 1.5, fontSize: 14, marginTop: -2}}>{place.rateByDeviceText}</div> : null}
+                                    <UI.Button level="buy" 
+                                        style={{marginTop: 16}}
+                                        onClick={this.props.openRatingDialog}>{place.rateByDevice ? 'Изменить' : 'Оставить отзыв'}</UI.Button>
+                                    {place.rateByDevice ? <UI.Button level="2" onClick={this.props.deleteRating} className="ratingMarginLeft">Удалить</UI.Button> : null}
+                                </div>
+                            }
+                            multiline>
+                            {`${user.first_name} ${user.last_name}`}
+                        </UI.Cell>
                     </UI.Group>
                     : null
                 }

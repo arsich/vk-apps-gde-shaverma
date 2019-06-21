@@ -218,8 +218,10 @@ class RatingDialog extends Component {
                     <UI.Textarea top="Комментарий"
                                 value={this.state.ratingComment}
                                 onChange={e => { 
-                                    this.setState({ratingComment: e.target.value})
-                                    this.props.handleRatingCommentChange(e.target.value)
+                                    const newText = e.target.value.length > 400 ? 
+                                        e.target.value.substring(0, 400) : e.target.value;
+                                    this.setState({ratingComment: newText})
+                                    this.props.handleRatingCommentChange(newText)
                                 }}
                                 placeholder="Что понравилось, что можно улучшить" />
                 </UI.FormLayout>
