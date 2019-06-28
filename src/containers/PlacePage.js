@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 import * as UI from '@vkontakte/vkui'
 
 import {getPlaceInfo, addRating, deleteRating, getCommentsForPlace} from '../actions/places'
-import {updateNavigation, setLocationForVK, shareVK, goBack} from '../actions/vk'
+import {updateNavigation, setLocationForVK, shareVK, goBack, showImageInVK} from '../actions/vk'
 
 import PlaceComponent from '../components/PlaceComponent'
 
@@ -97,6 +97,10 @@ class PlacePage extends Component {
         this.props.getCommentsForPlace(this.props.place.id, pageNumber, before)
     }
 
+    showImage = (link) => {
+        this.props.showImageInVK(link)
+    }
+
     render() {
         const {place, userAvatar, user, noMoreComments, commentsLoading, placeComments} = this.props;
         return (
@@ -112,6 +116,7 @@ class PlacePage extends Component {
                                         openRatingDialog={this.openRatingDialog}
                                         openPlaceLocation={this.openPlaceLocation}
                                         getCommentsForPlace={this.getCommentsForPlace}
+                                        showImageInVK={this.showImage}
                                         deleteRating={this.deleteRating}
                                         goBack={this.goBack}
                                         shareVK={this.shareVK}
@@ -146,6 +151,7 @@ PlacePage.propTypes = {
     shareVK: PropTypes.func.isRequired,
     goBackVK: PropTypes.func.isRequired,
     setLocationForVK: PropTypes.func.isRequired,
+    showImageInVK: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired
 }
 
@@ -231,6 +237,6 @@ class RatingDialog extends Component {
 }
 
 export default withRouter(connect(mapStateToProps, {
-    getPlaceInfo, updateNavigation, addRating, deleteRating, 
+    getPlaceInfo, updateNavigation, addRating, deleteRating, showImageInVK,
     setLocationForVK, shareVK, goBackVK: goBack, getCommentsForPlace
 })(PlacePage))
