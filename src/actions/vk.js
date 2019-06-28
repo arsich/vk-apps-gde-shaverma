@@ -92,6 +92,17 @@ export function shareVK(link) {
     }}
 }
 
+export const VK_SHOW_IMAGE = 'VKWebAppShowImages'
+
+export function showImageInVK(image) {
+    return {[CALL_VKUI_CONNECT]: {
+        type: VK_SHOW_IMAGE,
+        data: {
+            images:[image]
+        }
+    }}
+}
+
 export const REDIRECT_FROM_HASH_SUCCESS = 'redirect_from_hash_success'
 
 export function redirectFromHash() {

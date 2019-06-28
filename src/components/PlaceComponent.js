@@ -143,17 +143,18 @@ class PlaceComponent extends Component {
         const hasSpecials = place.supplierId > 0 || place.hasVisa || place.hasFalafel || place.hasBeer || place.hasWC || place.hasOnCoal || place.hasHygiene
 
         const title = UI.platform() === UI.IOS ? truncateText(place.name, 18) : place.name
+        const description = place.description || '—'
 
         return (
             <UI.Panel id={this.props.id} ref={this.containerRef}>
                 <UI.PanelHeader
                     left={<UI.HeaderButton onClick={this.props.goBack}>{UI.platform() === UI.IOS ? <Icon28ChevronBack /> : <Icon24Back />}</UI.HeaderButton>}
                 >{title}</UI.PanelHeader>
-                <img src={getImageForPlace(place)} className="imageBig" alt={place.name} />
+                <img src={getImageForPlace(place)} className="imageBig" alt={place.name} onClick={this.props.showImageInVK.bind(this, getImageForPlace(place))} />
                 <UI.Group>
                     <UI.Header>{place.name}</UI.Header>
                     <UI.List className="bottomPaddingGroup">
-                        <UI.ListItem before={<Icon24Info />} multiline>{place.description}</UI.ListItem>
+                        <UI.ListItem before={<Icon24Info />} multiline>{description}</UI.ListItem>
                         <UI.ListItem before={<Icon24Place />} multiline onClick={this.props.openPlaceLocation}><UI.Link>Открыть на карте</UI.Link></UI.ListItem>
                         {place.workTime ? <UI.ListItem before={<Icon24Recent />}>{place.workTime}</UI.ListItem> : null }
                         {place.price ? <UI.ListItem before={<Icon24MoneyCircle />}>{place.price}</UI.ListItem> : null }
@@ -258,6 +259,7 @@ PlaceComponent.propTypes = {
     getCommentsForPlace: PropTypes.func,
     shareVK: PropTypes.func,
     goBack: PropTypes.func,
+    showImageInVK: PropTypes.func,
     commentsLoading: PropTypes.bool,
     noMoreComments: PropTypes.bool,
     placeComments: PropTypes.array,
