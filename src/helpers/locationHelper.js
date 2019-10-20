@@ -9,6 +9,9 @@ class LocationHelper {
     init(store) {
         this.store = store
         this.hasLocation = false
+    }
+
+    requestLocationOnStart() {
         this.send(requestLocation())
     }
 
