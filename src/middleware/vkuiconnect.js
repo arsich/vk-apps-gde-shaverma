@@ -1,4 +1,4 @@
-import * as connect from '@vkontakte/vkui-connect'
+import * as connect from '@vkontakte/vk-connect'
 
 import {VK_NEED_GO_BACK_EVENT, VK_WENT_BACK_EVENT,
     GET_GEODATA_EVENT, UPDATE_NAVIGATION_STATE_EVENT, 

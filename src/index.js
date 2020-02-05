@@ -11,16 +11,21 @@ import locationHelper from './helpers/locationHelper'
 
 import {unregister} from './registerServiceWorker'
 
-import 'core-js/es6/map'
-import 'core-js/es6/set'
+import mVKMiniAppsScrollHelper from '@vkontakte/mvk-mini-apps-scroll-helper'
+
+import 'core-js/features/map'
+import 'core-js/features/set'
 
 const store = configureStore()
 authHelper.init(store)
 locationHelper.init(store)
 
+const root = document.getElementById('root')
+mVKMiniAppsScrollHelper(root)
+
 ReactDOM.render(
     <Router>
         <Root store={store} />
     </Router>
-    , document.getElementById('root'))
+    , root)
 unregister()

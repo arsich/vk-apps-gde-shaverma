@@ -9,8 +9,6 @@ import {updateNavigation, setLocationForVK, shareVK, goBack, showImageInVK} from
 
 import PlaceComponent from '../components/PlaceComponent'
 
-import {isWebView} from '@vkontakte/vkui/src/lib/webview'
-
 import uiHelper from '../helpers/uiHelper'
 
 class PlacePage extends Component {
@@ -104,7 +102,7 @@ class PlacePage extends Component {
     render() {
         const {place, userAvatar, user, noMoreComments, commentsLoading, placeComments} = this.props;
         return (
-            <UI.ConfigProvider insets={this.props.insets} isWebView={isWebView}>
+            <UI.ConfigProvider insets={this.props.insets}>
                 <UI.Root activeView="mainView">
                     <UI.View id="mainView" activePanel={this.state.activePanel} popout={this.state.ratingDialog}>
                         <PlaceComponent place={place}

@@ -13,9 +13,6 @@ import introThree from '../assets/intro_three.jpg'
 import authHelper from '../helpers/authHelper'
 import locationHelper from '../helpers/locationHelper'
 
-
-import {isWebView} from '@vkontakte/vkui/src/lib/webview'
-
 import './LoadingPage.css'
 
 const introTextStyle={paddingBottom: 36, lineHeight: 1.5}
@@ -36,7 +33,7 @@ class LoadingPage extends Component {
         }
         const activePanel = !this.props.introShown && !redirectedFromHash ? "introPanel" : "loadingPanel"
         return (
-            <UI.ConfigProvider insets={this.props.insets} isWebView={isWebView}>
+            <UI.ConfigProvider insets={this.props.insets}>
                 <UI.Root activeView="mainView">
                     <UI.View id="mainView" activePanel={activePanel}>
                         <UI.Panel id="loadingPanel">
